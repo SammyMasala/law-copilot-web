@@ -1,12 +1,22 @@
 import React from "react";
-import { Button } from "react-bootstrap";
-
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col"; 
+import Quill from "./components/quill";
+import GPTBox from "./components/gptbox";
 
 const App:React.FC = () => {
     return (
-        <Button>
-            <h1>Copilot</h1>
-        </Button>
+        <Container>
+            <Row>
+                <Col>
+                    <Quill />
+                </Col>
+                <Col>
+                    <GPTBox />
+                </Col>
+            </Row>
+        </Container>
     )
 }
 
