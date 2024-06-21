@@ -1,12 +1,15 @@
-import React, { useState } from "react";
-import ReactQuill from "react-quill";
+import React from 'react';
+import ReactQuill from 'react-quill'; 
 import 'react-quill/dist/quill.snow.css';
 
-const Quill: React.FC = () => {
-    const [value, setValue] = useState('Welcome to Law Copilot!')
-    return (
-        <ReactQuill theme='snow' value={value} onChange={setValue}/>
-    )
+interface IUpdateInputProp{
+    updateInput : (message: string ) => void
 }
+
+const Quill: React.FC<IUpdateInputProp> = ({ updateInput }) => {
+    return (
+        <ReactQuill theme='snow' onChange={updateInput}/>
+    )
+} 
 
 export default Quill;

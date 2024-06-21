@@ -1,23 +1,24 @@
-import React from "react";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col"; 
+import React, { useState } from "react";
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 import Quill from "./components/quill";
-import GPTBox from "./components/gptbox";
+import ChatBox from "./components/chatbox";
 
-const App:React.FC = () => {
-    return (
+const App: React.FC = () => {
+    const [text, setText] = useState<string>("")
+    return(
         <Container>
             <Row>
                 <Col>
-                    <Quill />
+                    <Quill updateInput={setText}/>
                 </Col>
                 <Col>
-                    <GPTBox />
+                    <ChatBox />
                 </Col>
             </Row>
         </Container>
     )
 }
 
-export default App;
+export default App
