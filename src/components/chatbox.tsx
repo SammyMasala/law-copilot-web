@@ -2,6 +2,11 @@ import React, { FormEvent, useState } from 'react';
 import Form from 'react-bootstrap/Form';
 import ListGroup from 'react-bootstrap/ListGroup'
 import Button from 'react-bootstrap/Button';
+import Image from 'react-bootstrap/Image';
+import { getMessageResponse } from '../api';
+
+import bot from '../static/bot.png';
+import user from '../static/user.png';
 
 interface IMessage{
     text: string,
@@ -17,16 +22,26 @@ const ChatBox: React.FC = () => {
     const [messages, setMessages] = useState<IMessage[]>([])
     const [formData, setFormData] = useState<IChatBoxInput>({messageInput: ""})
 
-    const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try{
             const newMessage: IMessage = {
                 text: formData.messageInput,
                 isUser: true
             }
-            setMessages([...messages, newMessage])
+            setMessages(prevState => ([...prevState, newMessage]))
+
             // Reset form
             setFormData({messageInput: ""})
+
+            // Send message, await message reply
+            const reply: IMessage = {
+                text: await getMessageResponse(formData.messageInput),
+                isUser: false
+            }
+
+            setMessages(prevState => ([...prevState, reply]))   
+            console.log(messages)         
         }catch(err){
             console.error(err)
             handleFormSubmitError()
@@ -53,6 +68,7 @@ const ChatBox: React.FC = () => {
                 return (
                     <ListGroup.Item id={"message" + index.toString()}>
                         <h4>{message.text}</h4>
+                        <Image src={message.isUser === true ? user : bot} />
                     </ListGroup.Item>
                 )
             })}
