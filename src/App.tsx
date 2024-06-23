@@ -3,12 +3,12 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Quill from "./components/quill";
-import ChatBox from "./components/chatbox";
+import ChatBox from "./components/chatbox/";
 
 const App: React.FC = () => {
     const [text, setText] = useState<string>("")
     return(
-        <Container>
+        <Container fluid>
             <Row>
                 <Col>
                     <Quill updateInput={setText}/>
