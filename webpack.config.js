@@ -36,6 +36,15 @@ module.exports = {
     resolve: {
         extensions: [".js", ".jsx", ".ts", ".tsx"]
     },
+    performance: {
+        hints: false
+    },
+    optimization: {
+        splitChunks: {
+            minSize: 10000,
+            maxSize: 250000
+        }
+    },
     plugins: [
         new HtmlWebPlugin({
             template: "public/index.html"

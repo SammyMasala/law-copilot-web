@@ -1,0 +1,14 @@
+.cb-container {
+    height: 75vh;
+    overflow: auto;
+}
+
+.button-wrap {
+    word-break: break-all;
+    overflow-wrap: break-word; 
+}
+
+/* .bubble-user{
+    margin-right: 0;
+    margin-left: auto;
+} */

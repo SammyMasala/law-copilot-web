@@ -4,14 +4,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-
-interface ISubmitMessageProp{
-    submitMessage: (message:string) => void
-}
-
-interface IMessageInput {
-    messageInput: string
-}
+import type { ISubmitMessageProp, IMessageInput } from "./interfaces";
 
 const MessageInput: React.FC<ISubmitMessageProp> = ({submitMessage}) => {
     const initState = {
