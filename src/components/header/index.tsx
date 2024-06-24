@@ -2,13 +2,9 @@ import React from "react";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row"
 
-interface IHeader{
-    className: string
-}
-
-const Header: React.FC<IHeader> = ({className}) => {
+const Header: React.FC = () => {
     return (
-        <Container className={className}>
+        <Container>
             <Row>
                 <h4>Law Copilot</h4>
             </Row>

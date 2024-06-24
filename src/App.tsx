@@ -10,20 +10,26 @@ import Footer from "./components/footer";
 const App: React.FC = () => {
     const [text, setText] = useState<string>("")
     return(
-        <>
-            <Header className="vh-25"/>
-            <Container className="vh-100">            
-                <Row className="h-100">
-                    <Col className="h-100 w-50">
-                        <Quill updateInput={setText}/>
-                    </Col>
-                    <Col className="h-100 w-50">
-                        <ChatBox />
-                    </Col>
-                </Row>
-            </Container>
-            <Footer className="vh-25" />
-        </>
+        <Container fluid style={{height: '125vh' }}>
+            <Row style={{height: '10%' }}>
+                <Col>
+                    <Header />
+                </Col>
+            </Row>
+            <Row style={{height: '75%' }}>
+                <Col md={8} style={{height: '100%' }}>
+                    <Quill updateInput={setText}/>
+                </Col>
+                <Col style={{height: '100%' }}>
+                    <ChatBox />
+                </Col>
+            </Row>
+            <Row style={{height: '15%' }}>
+                <Col>
+                    <Footer />
+                </Col>
+            </Row>
+        </Container>
     )
 }
 

@@ -47,8 +47,8 @@ const ChatBox: React.FC = () => {
     }
     
     return (
-        <Container fluid>
-            <Row className='cb-container'>
+        <Container fluid className='h-100'>
+            <Row className='cb-container h-75'>
                 <ListGroup>
                     {messages.map((message, index) => {
                         const bubbleStyle: IChatBubbleStyle = {
@@ -70,7 +70,7 @@ const ChatBox: React.FC = () => {
                     })}
                 </ListGroup>
             </Row>            
-            <Row>
+            <Row className='h-25'>
                 <MessageInput 
                     submitMessage={handleFormSubmit}
                 />

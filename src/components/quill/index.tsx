@@ -11,9 +11,7 @@ interface IUpdateInputProp{
 
 const Quill: React.FC<IUpdateInputProp> = ({ updateInput }) => {
     return (
-        <Container fluid>
-                    <ReactQuill theme='snow' onChange={updateInput}/>
-        </Container>
+        <ReactQuill theme='snow' onChange={updateInput}/>
     )
 } 
 
