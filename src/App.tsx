@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import Button from "react-bootstrap/Button";
 import Quill from "./components/quill";
 import ChatBox from "./components/chatbox";
 import Header from "./components/header";
@@ -9,11 +10,15 @@ import Footer from "./components/footer";
 
 const App: React.FC = () => {
     const defautContentStyle = { height: "1000px" }
-    const [text, setText] = useState<string>("")
-    const [contentStyle, setContentStyle] = useState<{height: string}>(defautContentStyle) 
+    const [contentStyle, setContentStyle] = useState<{height: string}>(defautContentStyle)
+    const [textToAppend, setTextToAppend] = useState<string>("")
 
     useEffect(() => {
-        const elem = document.getElementById('content')
+        // TODO Load Prior Save (API)
+    }, [])
+    
+    useEffect(() => {
+        const elem = document.getElementById("content")
         elem!.style.height = `${elem!.offsetHeight.toString()}px`
     }, [contentStyle]);
 
@@ -26,10 +31,10 @@ const App: React.FC = () => {
             </Row>
             <Row id="content" className="flex-grow-1" style={contentStyle}>
                 <Col xs={8} id="editor" className="border h-100 p-1">
-                    <Quill updateInput={setText}/>
+                    <Quill textToAppend={textToAppend}/>
                 </Col>
                 <Col xs={4} id="chatbox" className="border h-100 p-1">
-                    <ChatBox />
+                    <ChatBox setSelectedButtonText={setTextToAppend}/>
                 </Col>
             </Row>
             <Row className="flex-shrink-0">
