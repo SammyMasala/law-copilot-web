@@ -9,8 +9,9 @@ import Row from "react-bootstrap/Row"
 const Footer: React.FC = () => {
     return (
         <Container>
-            <Row>
-                <a href="https://github.com/SammyMasala/law-copilot-webs">GitHub Page</a>
+            <Row className="d-inline-flex">
+                Icons by 
+                <a href="https://icons8.com/icons">Icon8</a>
             </Row>
         </Container>
     )

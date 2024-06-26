@@ -33,7 +33,7 @@ const MessageInput: React.FC<ISubmitMessageProp> = ({submitMessage}) => {
                 <Form.Group controlId='formTextInput'>
                     <Container fluid>
                         <Row>
-                            <Col lg={10}>
+                            <Col>
                                 <Form.Control 
                                     type='text' 
                                     placeholder='Insert message here...' 
