@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -13,9 +13,29 @@ import type { IChatBubbleStyle, IMessage, ISelectedButton } from "./interfaces";
 
 interface IChatBoxProps {
     setSelectedButtonText: (message:string) => void
+    messagesToAppend: IMessage[]
+    passMessagesToParent: (messages: IMessage[]) => void
 }
-const ChatBox: React.FC<IChatBoxProps> = ({setSelectedButtonText}) => {
+const ChatBox: React.FC<IChatBoxProps> = ({setSelectedButtonText, messagesToAppend, passMessagesToParent}) => {
     const [messages, setMessages] = useState<IMessage[]>([])
+
+    // Append Past Messages
+    useEffect(() => {
+        const appendMessagesToChatbox = () => {
+            setMessages([...messagesToAppend, ...messages])                
+        }
+
+        if(messagesToAppend.length){
+            appendMessagesToChatbox()
+        }
+    }, [messagesToAppend])
+
+    // Pass Messages to parent
+    useEffect(() => {
+        if(messages.length){
+            passMessagesToParent(messages)
+        }
+    }, [messages])
 
     const handleFormSubmit = async (messageInput: string) => {
         try{
