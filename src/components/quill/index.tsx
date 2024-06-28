@@ -16,10 +16,10 @@ const Quill: React.FC<IQuillProps> = ({textToAppend}) => {
     const [textHTML, setTextHTML] = useState<string>("");
     const quillRef = useRef<ReactQuill>(null) 
 
+    // Append text to Quill editor 
     useEffect(() => {
         const appendTextToQuill = () => {
             if(textToAppend.trim()){
-                // TODO append text to Quill editor 
                 const range = quillRef!.current?.getEditor().getLength() 
                 quillRef!.current?.getEditor().insertText(range || 0, `${textToAppend}\n`);
     
@@ -29,6 +29,7 @@ const Quill: React.FC<IQuillProps> = ({textToAppend}) => {
         appendTextToQuill()
     }, [textToAppend])
 
+    // Manage state for text contents
     const updateTextHTML = () => {
         try{
             const editor = quillRef!.current?.getEditor()
@@ -45,25 +46,18 @@ const Quill: React.FC<IQuillProps> = ({textToAppend}) => {
             console.error(err)
         }
     }
-
-    useEffect(() => {
-        if(!textToAppend.trim()){
-            return
-        }
-
-    }, [textToAppend])
     
     return (
         <Container fluid className="h-100 d-flex flex-column">
-            <Row className="flex-grow-1 p-1 overflow-auto">
-                <ReactQuill theme="snow" onChange={updateTextHTML} ref={quillRef}/>
+            <Row className="flex-grow-1 m-2 ml-4 mr-4 p-0 h-100">
+                <ReactQuill theme="snow" onChange={updateTextHTML} className="bg-light bg-opacity-90 rounded h-100 p-0 m-2 overflow-auto" ref={quillRef}/>
             </Row>
             <Row>
-                <Col className="d-flex p-2">                
-                    <Button className="flex-grow-1">Save as .docx</Button>
+                <Col className="d-flex justify-content-center p-2">                
+                    <Button variant="dark">Save as .docx</Button>
                 </Col>
-                <Col className="d-flex p-2">                
-                    <Button className="flex-grow-1" onClick={handleExportPDF}>Save as .pdf</Button>
+                <Col className="d-flex justify-content-center p-2">                
+                    <Button variant="secondary" onClick={handleExportPDF}>Save as .pdf</Button>
                 </Col>
             </Row>
         </Container>
