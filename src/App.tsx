@@ -17,7 +17,7 @@ const App: React.FC = () => {
     useEffect(() => {
     }, [])
 
-    // Clear textToAppend
+    // Reset textToAppend
     useEffect(() => {
         if(textToAppend.trim()){
             setTextToAppend("")
@@ -31,7 +31,7 @@ const App: React.FC = () => {
 
     return(
         <Container fluid id="root-container" className="d-flex flex-column vh-100">
-            <Row id="header" className="flex-shrink-0">
+            <Row id="header" className="bg-dark flex-shrink-0">
                 <Col>
                     <Header />
                 </Col>

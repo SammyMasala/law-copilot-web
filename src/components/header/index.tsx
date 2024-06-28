@@ -9,7 +9,7 @@ import github from "../../static/icons8-github-25.png";
 
 const Header: React.FC = () => {
     return (
-        <Container fluid>
+        <Container fluid className="bg-dark text-light">
             <Row className="m-1">
                 <Col className="d-flex align-item-center justify-content-start">
                     <Image className="m-1" src={book} roundedCircle />
@@ -17,7 +17,7 @@ const Header: React.FC = () => {
                 </Col>
                 <Col className="d-flex justify-content-center">
                     <a href="https://github.com/SammyMasala/law-copilot-web">
-                        <Image className="m-1" src={github} roundedCircle/>
+                        <Image className="bg-light m-1" src={github} roundedCircle/>
                     </a>
                 </Col>
                 <Col className="d-flex justify-content-end">
