@@ -25,3 +25,7 @@ export interface ISubmitMessageProp{
 export interface IMessageInput {
     messageInput: string
 }
+
+export interface IChatBoxProps {
+    setSelectedButtonText: (message:string) => void
+}

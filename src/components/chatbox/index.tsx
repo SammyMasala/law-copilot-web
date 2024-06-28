@@ -9,7 +9,12 @@ import MessageInput from "./messageInput";
 import ChatBubble from "./chatBubble";
 
 import "./styles.css";
-import type { IChatBubbleStyle, IMessage, ISelectedButton } from "./interfaces";
+import type { 
+    IChatBoxProps, 
+    IChatBubbleStyle, 
+    IMessage, 
+    ISelectedButton 
+} from "./interfaces";
 
 interface IChatBoxProps {
     setSelectedButtonText: (message:string) => void
@@ -78,7 +83,7 @@ const ChatBox: React.FC<IChatBoxProps> = ({setSelectedButtonText, messagesToAppe
                         }
                         return (  
                             <ListGroup.Item 
-                                id={index.toString()}
+                                id={`list-item-${index.toString()}`}
                                 className={message.isUser === true ? "d-flex justify-content-end": "d-flex justify-content-start"}
                             >                                    
                                 <ChatBubble 
@@ -91,7 +96,7 @@ const ChatBox: React.FC<IChatBoxProps> = ({setSelectedButtonText, messagesToAppe
                     })}
                 </ListGroup>
             </Row>            
-            <Row className="mb-0">
+            <Row className="mb-1 p-1">
                 <MessageInput 
                     submitMessage={handleFormSubmit}
                 />
