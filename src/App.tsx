@@ -24,6 +24,7 @@ const App: React.FC = () => {
         }
     }, [textToAppend])
     
+    // Set editor height (enable overflow)
     useEffect(() => {
         const elem = document.getElementById("content")
         elem!.style.height = `${elem!.offsetHeight.toString()}px`
@@ -43,11 +44,7 @@ const App: React.FC = () => {
                 <Col xs={4} id="chatbox" className="border h-100 p-1">
                     <ChatBox setSelectedButtonText={setTextToAppend}/>
                 </Col>
-            </Row>
-            <Row className="flex-shrink-0">
-                <Col>
-                </Col>
-            </Row>
+            </Row>            
         </Container>
     )
 }
