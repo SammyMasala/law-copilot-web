@@ -23,7 +23,7 @@ const Quill: React.FC<IQuillProps> = ({textToAppend, setCurrentDocument}) => {
             if(textToAppend.trim()){
                 // TODO append text to Quill editor 
                 const range = quillRef!.current?.getEditor().getLength() 
-                quillRef!.current?.getEditor().insertText(range || 0, `\n${textToAppend}`);
+                quillRef!.current?.getEditor().insertText(range || 0, `${textToAppend}\n`);
     
                 console.log(textToAppend)
             }
