@@ -13,9 +13,16 @@ const App: React.FC = () => {
     const [contentStyle, setContentStyle] = useState<{height: string}>(defautContentStyle)
     const [textToAppend, setTextToAppend] = useState<string>("")
 
+    // TODO Load Prior Save (API)
     useEffect(() => {
-        // TODO Load Prior Save (API)
     }, [])
+
+    // Clear textToAppend
+    useEffect(() => {
+        if(textToAppend.trim()){
+            setTextToAppend("")
+        }
+    }, [textToAppend])
     
     useEffect(() => {
         const elem = document.getElementById("content")
