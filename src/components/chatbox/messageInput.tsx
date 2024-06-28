@@ -30,21 +30,21 @@ const MessageInput: React.FC<ISubmitMessageProp> = ({submitMessage}) => {
 
     return (
         <Form onSubmit={handleSubmitMessage}>
-                <Form.Group controlId='formTextInput'>
+                <Form.Group controlId="formTextInput">
                     <Container fluid>
                         <Row>
                             <Col>
                                 <Form.Control 
-                                    type='text' 
-                                    placeholder='Insert message here...' 
-                                    aria-describedby='userInputField' 
-                                    name='messageInput' 
+                                    type="text" 
+                                    placeholder="Insert message here..." 
+                                    aria-describedby="userInputField" 
+                                    name="messageInput" 
                                     value={message.messageInput}
                                     onChange={handleUpdateMessage}              
                                 />
                             </Col>
                             <Col>
-                                <Button type='submit'>
+                                <Button type="submit">
                                     Submit
                                 </Button>
                             </Col>

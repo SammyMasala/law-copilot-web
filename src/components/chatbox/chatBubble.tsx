@@ -5,7 +5,7 @@ import type { ITextBubbleProps, IChatBubbleStyle } from "./interfaces";
 const ChatBubble: React.FC<ITextBubbleProps> = ({selectTextBubble, message, bubbleStyle}) => {
     const handleSelectButton = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         const selectedButton = {
-            message: e.currentTarget.value
+            message: e.currentTarget.innerHTML
         }
 
         selectTextBubble(selectedButton)

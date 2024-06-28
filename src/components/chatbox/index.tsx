@@ -1,19 +1,23 @@
-import React, { useState } from 'react';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import ListGroup from 'react-bootstrap/ListGroup'
-import { getMessageResponse } from '../../api';
+import React, { useState } from "react";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import ListGroup from "react-bootstrap/ListGroup"
+import { getMessageResponse } from "../../api";
 
-import MessageInput from './messageInput';
-import ChatBubble from './chatBubble';
+import MessageInput from "./messageInput";
+import ChatBubble from "./chatBubble";
 
 import "./styles.css";
-import type { IChatBubbleStyle, IMessage, ISelectedButton } from './interfaces';
+import type { 
+    IChatBoxProps, 
+    IChatBubbleStyle, 
+    IMessage, 
+    ISelectedButton 
+} from "./interfaces";
 
-const ChatBox: React.FC = () => {
+const ChatBox: React.FC<IChatBoxProps> = ({setSelectedButtonText}) => {
     const [messages, setMessages] = useState<IMessage[]>([])
-    const [selectedButton, setSelectedButton] = useState<ISelectedButton>()
 
     const handleFormSubmit = async (messageInput: string) => {
         try{
@@ -30,7 +34,6 @@ const ChatBox: React.FC = () => {
             }
 
             setMessages(prevState => ([...prevState, reply]))   
-            console.log(messages)         
         }catch(err){
             console.error(err)
             handleFormSubmitError()
@@ -39,7 +42,7 @@ const ChatBox: React.FC = () => {
     }
 
     const handleSelectButton = (selected: ISelectedButton) => {
-        setSelectedButton(selected)
+        setSelectedButtonText(selected.message)
     }
 
     const handleFormSubmitError = () => {
@@ -47,8 +50,8 @@ const ChatBox: React.FC = () => {
     }
     
     return (
-        <Container fluid className='d-flex flex-column h-100'>
-            <Row className='flex-grow-1 m-1 p-1 overflow-auto'>
+        <Container fluid className="d-flex flex-column h-100">
+            <Row className="flex-grow-1 m-1 p-1 overflow-auto">
                 <ListGroup>
                     {messages.map((message, index) => {
                         const bubbleStyle: IChatBubbleStyle = {
@@ -57,7 +60,7 @@ const ChatBox: React.FC = () => {
                         }
                         return (  
                             <ListGroup.Item 
-                                id={index.toString()}
+                                id={`list-item-${index.toString()}`}
                                 className={message.isUser === true ? "d-flex justify-content-end": "d-flex justify-content-start"}
                             >                                    
                                 <ChatBubble 
@@ -70,7 +73,7 @@ const ChatBox: React.FC = () => {
                     })}
                 </ListGroup>
             </Row>            
-            <Row className='mb-0'>
+            <Row className="mb-1 p-1">
                 <MessageInput 
                     submitMessage={handleFormSubmit}
                 />
