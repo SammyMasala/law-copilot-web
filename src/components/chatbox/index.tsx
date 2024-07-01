@@ -14,9 +14,9 @@ import type { IChatBubbleStyle, IMessage, ISelectedButton } from "./interfaces";
 interface IChatBoxProps {
     setSelectedButtonText: (message:string) => void
     messagesToAppend: IMessage[]
-    passMessagesToParent: (messages: IMessage[]) => void
+    setCurrentMessages: (messages: IMessage[]) => void
 }
-const ChatBox: React.FC<IChatBoxProps> = ({setSelectedButtonText, messagesToAppend, passMessagesToParent}) => {
+const ChatBox: React.FC<IChatBoxProps> = ({setSelectedButtonText, messagesToAppend, setCurrentMessages}) => {
     const [messages, setMessages] = useState<IMessage[]>([])
 
     // Append Past Messages
@@ -33,7 +33,7 @@ const ChatBox: React.FC<IChatBoxProps> = ({setSelectedButtonText, messagesToAppe
     // Pass Messages to parent
     useEffect(() => {
         if(messages.length){
-            passMessagesToParent(messages)
+            setCurrentMessages(messages)
         }
     }, [messages])
 

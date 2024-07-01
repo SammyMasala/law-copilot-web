@@ -12,17 +12,31 @@ const App: React.FC = () => {
     const defautContentStyle = { height: "1000px" }
     const [contentStyle, setContentStyle] = useState<{height: string}>(defautContentStyle)
 
-    const [messages, setMessages] = useState<IMessage[]>([])
-    const [editorDelta, setEditorDelta] = useState<any>()
+    const [currentMessages, setCurrentMessages] = useState<IMessage[]>([])
+    const [currentDocument, setCurrentDocument] = useState<string>()
 
     const [textToAppend, setTextToAppend] = useState<string>("")
-    const [messagesToAppend, setMessagesToAppend] = useState<IMessage[]>([])
+    const [messagesToAppend, setMessagesToAppend] = useState<IMessage[]>([]) 
 
     // TODO Load Prior Save (API)
     useEffect(() => {
     }, [])
+
+    // Reset textToAppend
+    useEffect(() => {
+        if(textToAppend.trim()){
+            setTextToAppend("")
+        }
+    }, [textToAppend])
+
+    // Reset messagesToAppend
+    useEffect(() => {
+        if(messagesToAppend.length){
+            setMessagesToAppend([])
+        }
+    }, [messagesToAppend])
     
-    // Set editor height
+    // Set editor height (enable overflow)
     useEffect(() => {
         const elem = document.getElementById("content")
         elem!.style.height = `${elem!.offsetHeight.toString()}px`
@@ -37,18 +51,10 @@ const App: React.FC = () => {
             </Row>
             <Row id="content" className="flex-grow-1" style={contentStyle}>
                 <Col xs={8} id="editor" className="border h-100 p-1">
-                    <Quill textToAppend={textToAppend}/>
+                    <Quill textToAppend={textToAppend} setCurrentDocument={setCurrentDocument}/>
                 </Col>
-                <Col xs={4} id="chatbox" className="border h-100 p-1">
-                    <ChatBox 
-                        setSelectedButtonText={setTextToAppend} 
-                        messagesToAppend={messagesToAppend}
-                        passMessagesToParent={setMessages}
-                    />
-                </Col>
-            </Row>
-            <Row className="flex-shrink-0">
-                <Col>
+                <Col xs={4} id="chatbox" className="h-100">
+                    <ChatBox setSelectedButtonText={setTextToAppend} messagesToAppend={messagesToAppend} setCurrentMessages={setCurrentMessages}/>
                 </Col>
             </Row>
         </Container>

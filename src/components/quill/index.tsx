@@ -10,22 +10,31 @@ import { exportToPDF } from "../../libs";
 
 interface IQuillProps{
     textToAppend: string
+    setCurrentDocument: (document: string) => void
 }
 
-const Quill: React.FC<IQuillProps> = ({textToAppend}) => { 
+const Quill: React.FC<IQuillProps> = ({textToAppend, setCurrentDocument}) => { 
     const [textHTML, setTextHTML] = useState<string>("");
     const quillRef = useRef<ReactQuill>(null) 
 
+    // Append ext to Quill editor 
     useEffect(() => {
         const appendTextToQuill = () => {
             if(textToAppend.trim()){
-                // TODO append text to Quill editor 
                 console.log(textToAppend)
             }
         }
         appendTextToQuill()
     }, [textToAppend])
 
+    // Pass document to parent
+    useEffect(() => {
+        if(textHTML.trim()){
+            setCurrentDocument(textHTML)
+        }
+    }, [textHTML])
+
+    // Update Global document state
     const updateTextHTML = () => {
         try{
             const editor = quillRef!.current?.getEditor()
@@ -43,13 +52,6 @@ const Quill: React.FC<IQuillProps> = ({textToAppend}) => {
         }
     }
 
-    useEffect(() => {
-        if(!textToAppend.trim()){
-            return
-        }
-
-    }, [textToAppend])
-    
     return (
         <Container fluid className="h-100 d-flex flex-column">
             <Row className="flex-grow-1 p-1 overflow-auto">
