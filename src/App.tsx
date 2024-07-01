@@ -22,6 +22,14 @@ const App: React.FC = () => {
     useEffect(() => {
     }, [])
 
+    // DEBUG: print current document and message
+    // useEffect(() => {
+    //     console.log(currentDocument)
+    // }, [currentDocument])
+    // useEffect(() => {
+    //     console.log(currentMessages)
+    // }, [currentMessages])
+
     // Reset textToAppend
     useEffect(() => {
         if(textToAppend.trim()){
