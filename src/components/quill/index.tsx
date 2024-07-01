@@ -10,9 +10,10 @@ import { exportToPDF } from "../../libs";
 
 interface IQuillProps{
     textToAppend: string
+    setCurrentDocument: (document: string) => void
 }
 
-const Quill: React.FC<IQuillProps> = ({textToAppend}) => { 
+const Quill: React.FC<IQuillProps> = ({textToAppend, setCurrentDocument}) => { 
     const [textHTML, setTextHTML] = useState<string>("");
     const quillRef = useRef<ReactQuill>(null) 
     const editorRef = useRef<HTMLElement>(null)
@@ -29,6 +30,13 @@ const Quill: React.FC<IQuillProps> = ({textToAppend}) => {
         }
         appendTextToQuill()
     }, [textToAppend])
+
+    // Pass document to parent
+    useEffect(() => {
+        if(textHTML.trim()){
+            setCurrentDocument(textHTML)
+        }
+    }, [textHTML])
 
     // Set quill height (enable overflow)
     useEffect(() => {

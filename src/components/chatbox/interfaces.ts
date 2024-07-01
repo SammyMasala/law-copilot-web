@@ -28,4 +28,6 @@ export interface IMessageInput {
 
 export interface IChatBoxProps {
     setSelectedButtonText: (message:string) => void
+    messagesToAppend: IMessage[]
+    setCurrentMessages: (messages: IMessage[]) => void
 }
