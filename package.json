@@ -6,7 +6,7 @@
   "scripts": {
     "test": "npx jest",
     "start": "webpack server --mode=production",
-    "build": "webpack mode=production"
+    "build": "webpack"
   },
   "repository": {
     "type": "git",

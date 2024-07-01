@@ -2,11 +2,11 @@ import React, { useEffect, useRef, useState } from "react";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Button from "react-bootstrap/Button";
 import Quill from "./components/quill";
 import ChatBox, { IMessage } from "./components/chatbox";
 import Header from "./components/header";
-import Footer from "./components/footer";
+
+import background from "./static/bg-image.jpg"; 
 
 const App: React.FC = () => {
     const defautContentStyle = { height: "1000px" }
@@ -18,6 +18,7 @@ const App: React.FC = () => {
     const [textToAppend, setTextToAppend] = useState<string>("")
     const [messagesToAppend, setMessagesToAppend] = useState<IMessage[]>([]) 
 
+    // TODO Load Prior Save (API)
     // TODO Load Prior Save (API)
     useEffect(() => {
     }, [])

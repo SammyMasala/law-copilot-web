@@ -15,6 +15,12 @@ import type {
     IMessage, 
     ISelectedButton 
 } from "./interfaces";
+import type { 
+    IChatBoxProps, 
+    IChatBubbleStyle, 
+    IMessage, 
+    ISelectedButton 
+} from "./interfaces";
 
 const ChatBox: React.FC<IChatBoxProps> = ({setSelectedButtonText, messagesToAppend, setCurrentMessages}) => {
     const [messages, setMessages] = useState<IMessage[]>([])
@@ -68,7 +74,7 @@ const ChatBox: React.FC<IChatBoxProps> = ({setSelectedButtonText, messagesToAppe
     }
     
     return (
-        <Container fluid className="d-flex flex-column h-100">
+        <Container fluid className="bg-dark bg-opacity-25 d-flex h-100 p-1 flex-column">
             <Row className="flex-grow-1 m-1 p-1 overflow-auto">
                 <ListGroup>
                     {messages.map((message, index) => {
@@ -79,7 +85,7 @@ const ChatBox: React.FC<IChatBoxProps> = ({setSelectedButtonText, messagesToAppe
                         return (  
                             <ListGroup.Item 
                                 id={`list-item-${index.toString()}`}
-                                className={message.isUser === true ? "d-flex justify-content-end": "d-flex justify-content-start"}
+                                className={`border border-0 bg-transparent d-flex ${message.isUser === true ? "justify-content-end": "justify-content-start"}`}
                             >                                    
                                 <ChatBubble 
                                     selectTextBubble={handleSelectButton} 
@@ -91,6 +97,7 @@ const ChatBox: React.FC<IChatBoxProps> = ({setSelectedButtonText, messagesToAppe
                     })}
                 </ListGroup>
             </Row>            
+            <Row className="mb-1 p-1">
             <Row className="mb-1 p-1">
                 <MessageInput 
                     submitMessage={handleFormSubmit}
