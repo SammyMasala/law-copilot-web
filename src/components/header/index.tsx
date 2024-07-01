@@ -21,8 +21,11 @@ const Header: React.FC = () => {
                     </a>
                 </Col>
                 <Col className="d-flex justify-content-end">
-                    <div className="mt-auto mb-auto">Icons by: </div> 
+                    <div className="mt-auto mb-auto">Icons by:</div> 
                     <a className="mt-auto mb-auto" href="https://icons8.com/icons">Icon8</a>
+                    <div className="mt-auto mb-auto">,</div> 
+                    <div className="mt-auto mb-auto">BG by:</div>  
+                    <a className="mt-auto mb-auto" href="https://www.freepik.com/free-vector/cyber-technology-background_6402688.htm#query=it%20background&position=0&from_view=keyword&track=ais_user&uuid=73e9c954-6e54-4d16-95da-ffdf53aff0ab">Freepik</a>
                 </Col>
             </Row>
         </Container>
