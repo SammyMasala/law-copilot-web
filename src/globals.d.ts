@@ -4,7 +4,7 @@ declare module "*.png" {
     export default value;
 }
 
-// PNG
+// JPG
 declare module "*.jpg" {
     const value: string;
     export default value;
