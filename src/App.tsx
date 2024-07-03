@@ -19,7 +19,6 @@ const App: React.FC = () => {
     const [messagesToAppend, setMessagesToAppend] = useState<IMessage[]>([]) 
 
     // TODO Load Prior Save (API)
-    // TODO Load Prior Save (API)
     useEffect(() => {
     }, [])
 

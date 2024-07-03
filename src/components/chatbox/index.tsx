@@ -15,12 +15,6 @@ import type {
     IMessage, 
     ISelectedButton 
 } from "./interfaces";
-import type { 
-    IChatBoxProps, 
-    IChatBubbleStyle, 
-    IMessage, 
-    ISelectedButton 
-} from "./interfaces";
 
 const ChatBox: React.FC<IChatBoxProps> = ({setSelectedButtonText, messagesToAppend, setCurrentMessages}) => {
     const [messages, setMessages] = useState<IMessage[]>([])
