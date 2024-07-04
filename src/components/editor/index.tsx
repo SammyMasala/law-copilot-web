@@ -10,14 +10,14 @@ import Delta from "quill-delta";
 import "react-quill-new/dist/quill.snow.css";
 
 interface IEditorProps{
-    updateDocumentParent: (document: string) => void
+    onChange: (document: string) => void
 }
-const Editor: React.FC<IEditorProps> = ({updateDocumentParent}) => {
+const Editor: React.FC<IEditorProps> = ({onChange}) => {
     const [documentHTML, setDocumentHTML] = useState<string>("")
 
     // Chain update to parent
     useEffect(() => {
-        updateDocumentParent(documentHTML)
+        onChange(documentHTML)
     },[documentHTML])
 
     const handleChangeDocument = (value: string, delta: Delta, source: EmitterSource, editor: ReactQuill.UnprivilegedEditor) => {

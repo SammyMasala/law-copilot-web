@@ -19,10 +19,10 @@ const App: React.FC = () => {
             </Row>
             <Row className="flex-grow-1" id="content">
                 <Col xs={12} md={8} id="content-editor">
-                    <Editor updateDocumentParent={setDocument}/>
+                    <Editor onChange={setDocument}/>
                 </Col>
                 <Col xs={0} md={4} id="content-chatbox">
-                    <Chatbox updateMessagesParent={setMessages}/>
+                    <Chatbox onChange={setMessages}/>
                 </Col>
             </Row>
         </Container>

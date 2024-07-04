@@ -12,10 +12,10 @@ export interface IMessage{
 }
 
 interface IChatboxProps{
-    updateMessagesParent: (messages: IMessage[]) => void
+    onChange: (messages: IMessage[]) => void
 }
 
-const Chatbox: React.FC<IChatboxProps> = ({updateMessagesParent}) => {
+const Chatbox: React.FC<IChatboxProps> = ({onChange}) => {
     const [input, setInput] = useState<string>("");
     const [messages, setMessages] = useState<IMessage[]>([]); 
     const inputRef = useRef<HTMLInputElement>(null)
@@ -29,7 +29,7 @@ const Chatbox: React.FC<IChatboxProps> = ({updateMessagesParent}) => {
         }
 
         //Chain to parent
-        updateMessagesParent(messages)
+        onChange(messages)
     }, [messages])
 
     const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
