@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -6,20 +6,23 @@ import Col from "react-bootstrap/Col";
 import github from './static/icons8-github-25.png'
 import Header from './components/header';
 import Editor from './components/editor';
-import Chatbox from './components/chatbox';
+import Chatbox, { IMessage } from './components/chatbox';
 
 const App: React.FC = () => {
+    const [document, setDocument] = useState<string>("")
+    const [messages, setMessages] = useState<IMessage[]>([])
+
     return (
-        <Container fluid>
-            <Row id="header">
+        <Container className='bg-dark-subtle d-flex flex-column vh-100' fluid>
+            <Row className="bg-dark text-light flex-shrink-0" id="header">
                 <Header />
             </Row>
-            <Row id="content">
-                <Col id="content-editor">
-                    <Editor />
+            <Row className="flex-grow-1" id="content">
+                <Col xs={12} md={8} id="content-editor">
+                    <Editor updateDocumentParent={setDocument}/>
                 </Col>
-                <Col id="content-chatbox">
-                    <Chatbox />
+                <Col xs={0} md={4} id="content-chatbox">
+                    <Chatbox updateMessagesParent={setMessages}/>
                 </Col>
             </Row>
         </Container>

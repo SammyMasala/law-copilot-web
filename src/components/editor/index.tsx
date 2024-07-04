@@ -1,8 +1,37 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import Image from "react-bootstrap/Image"
+import Button from "react-bootstrap/Button";
+import ReactQuill, { EmitterSource } from "react-quill-new"; 
+import Delta from "quill-delta"; 
 
-const Editor: React.FC = () => {
+import "react-quill-new/dist/quill.snow.css";
+
+interface IEditorProps{
+    updateDocumentParent: (document: string) => void
+}
+const Editor: React.FC<IEditorProps> = ({updateDocumentParent}) => {
+    const [documentHTML, setDocumentHTML] = useState<string>("")
+
+    // Chain update to parent
+    useEffect(() => {
+        updateDocumentParent(documentHTML)
+    },[documentHTML])
+
+    const handleChangeDocument = (value: string, delta: Delta, source: EmitterSource, editor: ReactQuill.UnprivilegedEditor) => {
+        setDocumentHTML(editor.getHTML())
+    } 
+
+
     return (
-        <></>
+        <Container>
+            <Row id="editor-save"></Row>
+            <Row id="editor-quill">
+                <ReactQuill theme="snow" onChange={handleChangeDocument}/>
+            </Row>
+        </Container>
     )
 } 
 
