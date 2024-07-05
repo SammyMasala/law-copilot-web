@@ -8,12 +8,22 @@ import ReactQuill, { EmitterSource } from "react-quill-new";
 import Delta from "quill-delta"; 
 
 import "react-quill-new/dist/quill.snow.css";
+import docx from "../../static/icons8-docx-50.png";
+import pdf from "../../static/icons8-pdf-50.png"; 
+import { exportDOCX, exportPDF } from "../../libs/exportFile";
 
 interface IEditorProps{
     onChange: (document: string) => void
 }
 const Editor: React.FC<IEditorProps> = ({onChange}) => {
     const [documentHTML, setDocumentHTML] = useState<string>("")
+
+    useEffect(() => {
+        const quillContainer = document.querySelector(".ql-container") as HTMLElement 
+        if(quillContainer){
+            quillContainer.style.height = `${quillContainer.offsetHeight.toString()}px`;
+        }
+    }, [])
 
     // Chain update to parent
     useEffect(() => {
@@ -24,12 +34,31 @@ const Editor: React.FC<IEditorProps> = ({onChange}) => {
         setDocumentHTML(editor.getHTML())
     } 
 
+    const handleExportPDF = () => {
+        exportPDF(documentHTML);
+    }
+
+    const handleExportDOCX = () => {
+        exportDOCX(documentHTML);
+    }
+
 
     return (
-        <Container>
-            <Row id="editor-save"></Row>
-            <Row id="editor-quill">
-                <ReactQuill theme="snow" onChange={handleChangeDocument}/>
+        <Container className="d-flex flex-grow-1 flex-column">
+            <Row id="editor-save" className="flex-shrink-0">
+                <Col className="d-flex p-1 justify-content-center">
+                    <Button >                
+                        <Image src={pdf} onClick={handleExportPDF} roundedCircle/>
+                    </Button>
+                </Col>
+                <Col className="d-flex p-1 justify-content-center">                
+                    <Button>
+                        <Image src={docx} onClick={handleExportDOCX} roundedCircle/>
+                    </Button>
+                </Col>
+            </Row>
+            <Row id="editor-quill" className="flex-grow-1 d-flex overflow-auto">
+                <ReactQuill theme="snow" className="d-flex flex-column" onChange={handleChangeDocument}/>
             </Row>
         </Container>
     )

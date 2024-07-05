@@ -18,10 +18,10 @@ const App: React.FC = () => {
                 <Header />
             </Row>
             <Row className="flex-grow-1" id="content">
-                <Col xs={12} md={8} id="content-editor">
+                <Col xs={12} md={8} className="d-flex" id="content-editor">
                     <Editor onChange={setDocument}/>
                 </Col>
-                <Col xs={0} md={4} id="content-chatbox">
+                <Col xs={0} md={4} className="d-flex" id="content-chatbox">
                     <Chatbox onChange={setMessages}/>
                 </Col>
             </Row>

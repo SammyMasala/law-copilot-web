@@ -22,10 +22,12 @@ const Chatbox: React.FC<IChatboxProps> = ({onChange}) => {
 
     // Disable chatbox while waiting for reply
     useEffect(() => {
-        if (messages.at(-1)?.isUser){
-            inputRef!.current!.disabled = false;
-        } else{
+        if (messages.length && messages.at(-1)?.isUser){
             inputRef!.current!.disabled = true;
+            inputRef!.current!.placeholder = "...awaiting reply..."
+        } else {
+            inputRef!.current!.disabled = false;
+            inputRef!.current!.placeholder="Ask about..."
         }
 
         //Chain to parent
@@ -84,7 +86,6 @@ const Chatbox: React.FC<IChatboxProps> = ({onChange}) => {
                         value={input}
                         aria-describedby="user message input block"
                         onChange={handleChangeInput}
-                        placeholder="User Message:"
                     />
                     <Button variant="dark" type="submit">{"Send"}</Button>
                 </Form>
