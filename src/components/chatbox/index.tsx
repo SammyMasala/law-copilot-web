@@ -20,6 +20,13 @@ const Chatbox: React.FC<IChatboxProps> = ({onChange}) => {
     const [messages, setMessages] = useState<IMessage[]>([]); 
     const inputRef = useRef<HTMLInputElement>(null)
 
+    useEffect(() => {
+        const quillContainer = document.querySelector("#chatbox-messages") as HTMLElement 
+        if(quillContainer){
+            quillContainer.style.height = `${quillContainer.offsetHeight.toString()}px`;
+        }
+    }, [])
+
     // Disable chatbox while waiting for reply
     useEffect(() => {
         if (messages.length && messages.at(-1)?.isUser){
@@ -57,17 +64,23 @@ const Chatbox: React.FC<IChatboxProps> = ({onChange}) => {
     }
     return (
         <Container className="d-flex flex-column">
-            <Row id="messages overflow-auto">
+            <Row id="chatbox-messages" className="flex-grow-1 overflow-auto">
                 <ListGroup>
                     {messages.map((message, index) => {
                         return (
                             <ListGroup.Item 
                                 className={`d-flex border border-0 bg-transparent 
-                                ${message.isUser === true ? "justify-content-end" : "justify-content-start"}`} 
+                                ${message.isUser === true ? "justify-content-end" : "justify-content-start"}`}                                
                                 key={`list-${index}`}
                             >
                                 <Button 
-                                variant={`${message.isUser === true ? "dark" : "secondary"}`}
+                                variant={`${message.isUser === true ? "dark" : "secondary"}`} 
+                                style={
+                                    {
+                                        wordBreak: "break-all",
+                                        overflowWrap: "break-word"
+                                    }
+                                }
                                 >
                                     {message.text}
                                 </Button> 
@@ -77,7 +90,7 @@ const Chatbox: React.FC<IChatboxProps> = ({onChange}) => {
                 </ListGroup>
 
             </Row>
-            <Row className="mb-0" id="input">
+            <Row id="chatbox-input">
                 <Form className="d-flex" onSubmit={handleSubmitInput}>
                     <Form.Control 
                         type="text"

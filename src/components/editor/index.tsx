@@ -47,18 +47,18 @@ const Editor: React.FC<IEditorProps> = ({onChange}) => {
         <Container className="d-flex flex-grow-1 flex-column">
             <Row id="editor-save" className="flex-shrink-0">
                 <Col className="d-flex p-1 justify-content-center">
-                    <Button >                
+                    <Button variant="light" className="btn-outline-danger">                
                         <Image src={pdf} onClick={handleExportPDF} roundedCircle/>
                     </Button>
                 </Col>
                 <Col className="d-flex p-1 justify-content-center">                
-                    <Button>
+                    <Button variant="light" className="btn-outline-primary">
                         <Image src={docx} onClick={handleExportDOCX} roundedCircle/>
                     </Button>
                 </Col>
             </Row>
             <Row id="editor-quill" className="flex-grow-1 d-flex overflow-auto">
-                <ReactQuill theme="snow" className="d-flex flex-column" onChange={handleChangeDocument}/>
+                <ReactQuill theme="snow" className="bg-light-subtle d-flex flex-column p-2" onChange={handleChangeDocument}/>
             </Row>
         </Container>
     )

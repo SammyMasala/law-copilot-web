@@ -13,7 +13,7 @@ const App: React.FC = () => {
     const [messages, setMessages] = useState<IMessage[]>([])
 
     return (
-        <Container className='bg-dark-subtle d-flex flex-column vh-100' fluid>
+        <Container className='bg-dark-subtle d-flex flex-column vh-100 overflow-auto' fluid>
             <Row className="bg-dark text-light flex-shrink-0" id="header">
                 <Header />
             </Row>
@@ -21,7 +21,7 @@ const App: React.FC = () => {
                 <Col xs={12} md={8} className="d-flex" id="content-editor">
                     <Editor onChange={setDocument}/>
                 </Col>
-                <Col xs={0} md={4} className="d-flex" id="content-chatbox">
+                <Col xs={0} md={4} className="d-flex bg-secondary bg-opacity-50" id="content-chatbox">
                     <Chatbox onChange={setMessages}/>
                 </Col>
             </Row>
