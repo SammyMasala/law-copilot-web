@@ -1,86 +1,110 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
 import ListGroup from "react-bootstrap/ListGroup"
-import { getMessageResponse } from "../../api";
+import Form from "react-bootstrap/Form"
+import Button from "react-bootstrap/Button"
+import getResponse from "../../api/getResponse";
 
-import MessageInput from "./messageInput";
-import ChatBubble from "./chatBubble";
+export interface IMessage{
+    text: string;
+    isUser: boolean;
+}
 
-import "./styles.css";
-import type { 
-    IChatBoxProps, 
-    IChatBubbleStyle, 
-    IMessage, 
-    ISelectedButton 
-} from "./interfaces";
+interface IChatboxProps{
+    onChange: (messages: IMessage[]) => void
+}
 
-const ChatBox: React.FC<IChatBoxProps> = ({setSelectedButtonText}) => {
-    const [messages, setMessages] = useState<IMessage[]>([])
+const Chatbox: React.FC<IChatboxProps> = ({onChange}) => {
+    const [input, setInput] = useState<string>("");
+    const [messages, setMessages] = useState<IMessage[]>([]); 
+    const inputRef = useRef<HTMLInputElement>(null)
 
-    const handleFormSubmit = async (messageInput: string) => {
-        try{
-            const newMessage: IMessage = {
-                text: messageInput,
-                isUser: true
-            }
-            setMessages(prevState => ([...prevState, newMessage]))
-
-            // Send message, await message reply
-            const reply: IMessage = {
-                text: await getMessageResponse(messageInput),
-                isUser: false
-            }
-
-            setMessages(prevState => ([...prevState, reply]))   
-        }catch(err){
-            console.error(err)
-            handleFormSubmitError()
+    useEffect(() => {
+        const quillContainer = document.querySelector("#chatbox-messages") as HTMLElement 
+        if(quillContainer){
+            quillContainer.style.height = `${quillContainer.offsetHeight.toString()}px`;
         }
-        
+    }, [])
+
+    // Disable chatbox while waiting for reply
+    useEffect(() => {
+        if (messages.length && messages.at(-1)?.isUser){
+            inputRef!.current!.disabled = true;
+            inputRef!.current!.placeholder = "...awaiting reply..."
+        } else {
+            inputRef!.current!.disabled = false;
+            inputRef!.current!.placeholder="Ask about..."
+        }
+
+        //Chain to parent
+        onChange(messages)
+    }, [messages])
+
+    const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const {name, value} = e.target;
+        setInput(value)
     }
 
-    const handleSelectButton = (selected: ISelectedButton) => {
-        setSelectedButtonText(selected.message)
-    }
+    const handleSubmitInput = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
+        const message = {
+            text: input, 
+            isUser: true
+        }
+        setMessages (prev => ([...prev, message]))
+        setInput("")
 
-    const handleFormSubmitError = () => {
-        //TODO: Show message notifying user of service error near input area
+        const reply = {
+            text: await getResponse(message.text),
+            isUser: false
+        }
+        setMessages (prev => ([...prev, reply]))
+
     }
-    
     return (
-        <Container fluid className="bg-dark bg-opacity-25 d-flex h-100 p-1 flex-column">
-            <Row className="flex-grow-1 m-1 p-1 overflow-auto">
+        <Container className="d-flex flex-column">
+            <Row id="chatbox-messages" className="flex-grow-1 overflow-auto">
                 <ListGroup>
                     {messages.map((message, index) => {
-                        const bubbleStyle: IChatBubbleStyle = {
-                            variant: message.isUser === true ? "dark": "secondary",
-                            className: "button-wrap text-start"
-                        }
-                        return (  
+                        return (
                             <ListGroup.Item 
-                                id={`list-item-${index.toString()}`}
-                                className={`border border-0 bg-transparent d-flex ${message.isUser === true ? "justify-content-end": "justify-content-start"}`}
-                            >                                    
-                                <ChatBubble 
-                                    selectTextBubble={handleSelectButton} 
-                                    message={message} 
-                                    bubbleStyle={bubbleStyle}
-                                />
-                            </ListGroup.Item>                        
+                                className={`d-flex border border-0 bg-transparent 
+                                ${message.isUser === true ? "justify-content-end" : "justify-content-start"}`}                                
+                                key={`list-${index}`}
+                            >
+                                <Button 
+                                variant={`${message.isUser === true ? "dark" : "secondary"}`} 
+                                style={
+                                    {
+                                        wordBreak: "break-all",
+                                        overflowWrap: "break-word"
+                                    }
+                                }
+                                >
+                                    {message.text}
+                                </Button> 
+                            </ListGroup.Item>
                         )
                     })}
                 </ListGroup>
-            </Row>            
-            <Row className="mb-1 p-1">
-                <MessageInput 
-                    submitMessage={handleFormSubmit}
-                />
-            </Row>            
+
+            </Row>
+            <Row id="chatbox-input">
+                <Form className="d-flex" onSubmit={handleSubmitInput}>
+                    <Form.Control 
+                        type="text"
+                        name="input"
+                        ref={inputRef}
+                        value={input}
+                        aria-describedby="user message input block"
+                        onChange={handleChangeInput}
+                    />
+                    <Button variant="dark" type="submit">{"Send"}</Button>
+                </Form>
+            </Row>
         </Container>
     )
 }
 
-export default ChatBox;
-export { IMessage, ISelectedButton }
+export default Chatbox;

@@ -1,36 +1,37 @@
 {
   "name": "law-copilot-web",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "test": "npx jest",
-    "start": "webpack server --mode=production",
+    "start": "webpack server --mode=development",
     "build": "webpack"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/SammyMasala/law-copilot-web.git"
   },
-  "author": "ChickenMasala",
+  "author": "",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/SammyMasala/law-copilot-web/issues"
   },
   "homepage": "https://github.com/SammyMasala/law-copilot-web#readme",
   "dependencies": {
-    "axios": "^1.7.2",
+    "bootstrap": "^5.3.3",
+    "quill-delta": "^5.1.0",
     "react": "^18.3.1",
-    "react-bootstrap": "^2.10.3",
+    "react-bootstrap": "^2.10.4",
     "react-dom": "^18.3.1",
-    "react-quill-new": "^3.2.0",
-    "winston": "^3.13.0"
+    "react-quill-new": "^3.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.24.7",
     "@babel/preset-env": "^7.24.7",
     "@babel/preset-react": "^7.24.7",
     "@babel/preset-typescript": "^7.24.7",
+    "@types/bootstrap": "^5.2.10",
     "@types/react": "^18.3.3",
     "@types/react-bootstrap": "^0.32.36",
     "@types/react-dom": "^18.3.0",
@@ -39,7 +40,7 @@
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.6.0",
     "style-loader": "^4.0.0",
-    "typescript": "^5.4.5",
+    "typescript": "^5.5.3",
     "webpack": "^5.92.1",
     "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^5.0.4"

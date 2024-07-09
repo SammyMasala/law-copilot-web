@@ -1,5 +1,5 @@
 const HtmlWebPlugin = require('html-webpack-plugin')
-const path = require("path");
+const path = require('path')
 
 module.exports = {
     mode: "production",
@@ -7,7 +7,7 @@ module.exports = {
     output: {
         path: path.join(__dirname, "dist"),
         filename: "bundle.js"
-    },    
+    },
     module: {
         rules: [
             {
@@ -16,20 +16,20 @@ module.exports = {
                 use: ["babel-loader"]
             },
             {
-                test: /\.css$/,
+                test: /\.(css)$/,
                 use: ["style-loader", "css-loader"]
             },
             {
-                test: /\.(png|jpg|svg)$/,
+                test: /\.(jpg|png|svg)$/,
                 use: [
                     {
                         loader: "file-loader",
                         options: {
-                            name: "[name].[hash].[ext]",
-                            outputPath: "assets/images"
+                            name: "[name].[page].[ext]",
+                            outputPath: "assets/images" 
                         }
                     }
-                ]
+                ] 
             }
         ]
     },
@@ -39,23 +39,16 @@ module.exports = {
     performance: {
         hints: false
     },
-    optimization: {
-        splitChunks: {
-            minSize: 10000,
-            maxSize: 250000
-        }
-    },
     plugins: [
         new HtmlWebPlugin({
             template: "public/index.html"
-        }),        
+        }) 
     ],
     devServer: {
         static: {
             directory: path.join(__dirname, "dist")
         },
         hot: true,
-        open: true        
+        open: true 
     }
-
 }

@@ -1,17 +1,8 @@
 // PNG
-declare module "*.png" {
-    const value: string;
-    export default value;
-}
+declare module "*.png" {}
 
 // JPG
-declare module "*.jpg" {
-    const value: string;
-    export default value;
-}
+declare module "*.jpg" {}
 
 // CSS
-declare module "*.css" {
-    const value: string;
-    export default value;
-}
+declare module "*.css" {}
