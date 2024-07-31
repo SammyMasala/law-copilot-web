@@ -1,23 +1,20 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import ListGroup from "react-bootstrap/ListGroup"
 import Form from "react-bootstrap/Form"
 import Button from "react-bootstrap/Button"
 import chatResponse from "../../api/chat.api";
+import { SessionContext } from "../../App";
 
 export interface IMessage {
     message: string;
     isUser: boolean;
 }
 
-interface IChatboxProps {
-    onChange: (messages: IMessage[]) => void
-}
-
-const Chatbox: React.FC<IChatboxProps> = ({ onChange }) => {
+const Chatbox: React.FC = () => {
+    const {messages, setMessages} = useContext(SessionContext)
     const [input, setInput] = useState<string>("");
-    const [messages, setMessages] = useState<IMessage[]>([]);
     const inputRef = useRef<HTMLInputElement>(null)
 
     useEffect(() => {
@@ -55,8 +52,6 @@ const Chatbox: React.FC<IChatboxProps> = ({ onChange }) => {
                 enableInputButton()
             })            
         } 
-        //Chain to parent
-        onChange(messages)
     }, [messages])
 
     const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -77,7 +72,7 @@ const Chatbox: React.FC<IChatboxProps> = ({ onChange }) => {
         <Container className="d-flex flex-column">
             <Row id="chatbox-messages" className="flex-grow-1 overflow-auto">
                 <ListGroup>
-                    {messages.map((message, index) => {
+                    {messages.map((message: IMessage, index: number) => {
                         return (
                             <ListGroup.Item
                                 className={`d-flex border border-0 bg-transparent

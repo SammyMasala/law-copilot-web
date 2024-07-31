@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -11,12 +11,10 @@ import "react-quill-new/dist/quill.snow.css";
 import docx from "../../static/icons8-docx-50.png";
 import pdf from "../../static/icons8-pdf-50.png"; 
 import { exportDOCX, exportPDF } from "../../libs/exportFile";
+import { SessionContext } from "../../App";
 
-interface IEditorProps{
-    onChange: (document: string) => void
-}
-const Editor: React.FC<IEditorProps> = ({onChange}) => {
-    const [documentHTML, setDocumentHTML] = useState<string>("")
+const Editor: React.FC = () => {
+    const {docHTML, setDocHTML} = useContext(SessionContext)
 
     useEffect(() => {
         const quillContainer = document.querySelector(".ql-container") as HTMLElement 
@@ -25,21 +23,16 @@ const Editor: React.FC<IEditorProps> = ({onChange}) => {
         }
     }, [])
 
-    // Chain update to parent
-    useEffect(() => {
-        onChange(documentHTML)
-    },[documentHTML])
-
     const handleChangeDocument = (value: string, delta: Delta, source: EmitterSource, editor: ReactQuill.UnprivilegedEditor) => {
-        setDocumentHTML(editor.getHTML())
+        setDocHTML(editor.getHTML())
     } 
 
     const handleExportPDF = () => {
-        exportPDF(documentHTML);
+        exportPDF(docHTML);
     }
 
     const handleExportDOCX = () => {
-        exportDOCX(documentHTML);
+        exportDOCX(docHTML);
     }
 
 
