@@ -1,0 +1,1 @@
+export const CHAT_ENDPOINT = process.env.CHAT_ENDPOINT || "https://localhost:8080"
