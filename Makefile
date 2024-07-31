@@ -1,8 +1,11 @@
 start-dev:
-	- webpack server --mode=development
+	- webpack server --mode development
 
-build:
-	- webpack
+build-staging:
+	- webpack --mode development
+
+build-production:
+	- webpack --mode production
 
 test:
 	- npm run test
