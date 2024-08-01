@@ -4,7 +4,8 @@ import { SESSION_GET_ENDPOINT, SESSION_PUT_ENDPOINT } from "../config"
 
 export const getSession = async (id: string) => {
     const response = (await axios.get(`${SESSION_GET_ENDPOINT}?session_id=${id}`)).data
-    return response.payload.Item
+    console.log(response)
+    return response.payload
 }
 
 export const putSession = async (id: string, docHTML: string, messages: IMessage[]) => {

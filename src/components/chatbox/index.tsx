@@ -26,6 +26,9 @@ const Chatbox: React.FC = () => {
 
     // Disable chatbox while waiting for reply
     useEffect(() => {
+        if(!messages.length || !messages.at(-1).isUser){
+            return
+        }
         const sendMessage = async(messages: IMessage[]) => {
             const reply = {
                 message: await chatResponse(messages),

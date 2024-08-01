@@ -5,7 +5,6 @@ import Col from "react-bootstrap/Col";
 import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
 import { v4 as uuidv4 } from "uuid"; 
 
-import github from './static/icons8-github-25.png'
 import Header from './components/header';
 import Editor from './components/editor';
 import Chatbox, { IMessage } from './components/chatbox';
@@ -47,9 +46,24 @@ const HomePage:React.FC = () => {
             return await getSession(id)
         }
         if(id){
-            load(id).catch(err => {console.log(err)}).then(result => {
-                console.log(result)
-                // TODO pass values to components
+            load(id).catch(err => {
+                if (err.status === 404){
+                    // TODO separate handling for "session not found"
+                }
+                console.error(err)
+            }).then(result => {
+                if(!result){
+                    return
+                }
+                try{
+                    // TODO pass values to components
+                    setDocHTML(result?.doc_html)
+                    setMessages(result?.messages.map((message: string) => {
+                        return JSON.parse(message)
+                    }))
+                }catch(err){
+                    console.log(err)
+                }
             })
         }
     }, [id])

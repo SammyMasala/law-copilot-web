@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react"
+import React, { useContext, useEffect, useRef, useState } from "react"
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -15,13 +15,20 @@ import { SessionContext } from "../../App";
 
 const Editor: React.FC = () => {
     const {docHTML, setDocHTML} = useContext(SessionContext)
+    const editorRef = useRef<ReactQuill | null>(null)
 
     useEffect(() => {
         const quillContainer = document.querySelector(".ql-container") as HTMLElement 
         if(quillContainer){
             quillContainer.style.height = `${quillContainer.offsetHeight.toString()}px`;
         }
+        const editor = document.getElementsByClassName('ql-editor')
+        editor[0].innerHTML = docHTML
     }, [])
+
+    useEffect(() => {
+        console.log(docHTML)
+    }, [docHTML])
 
     const handleChangeDocument = (value: string, delta: Delta, source: EmitterSource, editor: ReactQuill.UnprivilegedEditor) => {
         setDocHTML(editor.getHTML())
@@ -51,7 +58,7 @@ const Editor: React.FC = () => {
                 </Col>
             </Row>
             <Row id="editor-quill" className="flex-grow-1 d-flex overflow-auto">
-                <ReactQuill theme="snow" className="bg-light-subtle d-flex flex-column p-2" onChange={handleChangeDocument}/>
+                <ReactQuill theme="snow" className="bg-light-subtle d-flex flex-column p-2" onChange={handleChangeDocument} ref={editorRef}/>
             </Row>
         </Container>
     )
