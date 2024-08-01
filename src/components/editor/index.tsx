@@ -16,18 +16,23 @@ import { SessionContext } from "../../App";
 const Editor: React.FC = () => {
     const {docHTML, setDocHTML} = useContext(SessionContext)
     const editorRef = useRef<ReactQuill | null>(null)
+    const [isLoaded, setIsLoaded] = useState<boolean>(false);
 
     useEffect(() => {
         const quillContainer = document.querySelector(".ql-container") as HTMLElement 
         if(quillContainer){
             quillContainer.style.height = `${quillContainer.offsetHeight.toString()}px`;
         }
-        const editor = document.getElementsByClassName('ql-editor')
-        editor[0].innerHTML = docHTML
     }, [])
 
     useEffect(() => {
-        console.log(docHTML)
+        if(isLoaded || !docHTML){
+            return
+        }
+        console.log("test")
+        const editor = document.getElementsByClassName('ql-editor')
+        editor[0].innerHTML = docHTML
+        setIsLoaded(true)    
     }, [docHTML])
 
     const handleChangeDocument = (value: string, delta: Delta, source: EmitterSource, editor: ReactQuill.UnprivilegedEditor) => {
