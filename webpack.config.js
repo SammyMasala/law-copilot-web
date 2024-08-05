@@ -49,7 +49,7 @@ module.exports = (env, argv) => {
             }),
             new DotenvWebpackPlugin({
                 path: envFile
-            }) 
+            }),
         ],
         devServer: {
             static: {
