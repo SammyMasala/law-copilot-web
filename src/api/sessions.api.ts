@@ -16,6 +16,7 @@ export const putSession = async (id: string, docHTML: string, messages: IMessage
             messages: messages.map(message => JSON.stringify(message))
         }
     }
+    console.log(payload)
     const response = (await axios.post(SESSION_PUT_ENDPOINT, payload)).status
     return response
 }

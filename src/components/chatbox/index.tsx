@@ -13,23 +13,23 @@ export interface IMessage {
 }
 
 const Chatbox: React.FC = () => {
-    const {messages, setMessages} = useContext(SessionContext)
+    const { messages, setMessages } = useContext(SessionContext)
     const [input, setInput] = useState<string>("");
     const inputRef = useRef<HTMLInputElement>(null)
 
     useEffect(() => {
-        const quillContainer = document.querySelector("#chatbox-messages") as HTMLElement
-        if (quillContainer) {
-            quillContainer.style.height = `${quillContainer.offsetHeight.toString()}px`;
+        const chatboxContainer = document.querySelector("#chatbox-messages") as HTMLElement
+        if (chatboxContainer) {
+            chatboxContainer.style.height = `${chatboxContainer.offsetHeight.toString()}px`;
         }
     }, [])
 
     // Disable chatbox while waiting for reply
     useEffect(() => {
-        if(!messages.length || !messages.at(-1).isUser){
+        if (!messages.length || !messages.at(-1).isUser) {
             return
         }
-        const sendMessage = async(messages: IMessage[]) => {
+        const sendMessage = async (messages: IMessage[]) => {
             const reply = {
                 message: await chatResponse(messages),
                 isUser: false
@@ -38,12 +38,12 @@ const Chatbox: React.FC = () => {
         }
 
         const enableInputButton = (isEnabled: boolean = true) => {
-            if(isEnabled){
+            if (isEnabled) {
                 inputRef!.current!.disabled = false;
-                inputRef!.current!.placeholder = "Ask about..."   
-            }else{
+                inputRef!.current!.placeholder = "Ask about..."
+            } else {
                 inputRef!.current!.disabled = true;
-                inputRef!.current!.placeholder = "...awaiting reply..."   
+                inputRef!.current!.placeholder = "...awaiting reply..."
             }
         }
 
@@ -53,8 +53,8 @@ const Chatbox: React.FC = () => {
                 console.error(err)
             }).then(() => {
                 enableInputButton()
-            })            
-        } 
+            })
+        }
     }, [messages])
 
     const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {

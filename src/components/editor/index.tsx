@@ -14,9 +14,7 @@ import { exportDOCX, exportPDF } from "../../libs/exportFile";
 import { SessionContext } from "../../App";
 
 const Editor: React.FC = () => {
-    const {docHTML, setDocHTML} = useContext(SessionContext)
-    const editorRef = useRef<ReactQuill | null>(null)
-    const [isLoaded, setIsLoaded] = useState<boolean>(false);
+    const {docHTML, setDocHTML, isLoaded} = useContext(SessionContext)
 
     useEffect(() => {
         const quillContainer = document.querySelector(".ql-container") as HTMLElement 
@@ -26,14 +24,13 @@ const Editor: React.FC = () => {
     }, [])
 
     useEffect(() => {
-        if(isLoaded || !docHTML){
+        if(!isLoaded){
             return
         }
         console.log("test")
         const editor = document.getElementsByClassName('ql-editor')
         editor[0].innerHTML = docHTML
-        setIsLoaded(true)    
-    }, [docHTML])
+    }, [isLoaded])
 
     const handleChangeDocument = (value: string, delta: Delta, source: EmitterSource, editor: ReactQuill.UnprivilegedEditor) => {
         setDocHTML(editor.getHTML())
@@ -46,7 +43,6 @@ const Editor: React.FC = () => {
     const handleExportDOCX = () => {
         exportDOCX(docHTML);
     }
-
 
     return (
         <Container className="d-flex flex-grow-1 flex-column">
@@ -63,7 +59,7 @@ const Editor: React.FC = () => {
                 </Col>
             </Row>
             <Row id="editor-quill" className="flex-grow-1 d-flex overflow-auto">
-                <ReactQuill theme="snow" className="bg-light-subtle d-flex flex-column p-2" onChange={handleChangeDocument} ref={editorRef}/>
+                <ReactQuill theme="snow" className="bg-light-subtle d-flex flex-column p-2" onChange={handleChangeDocument}/>
             </Row>
         </Container>
     )
