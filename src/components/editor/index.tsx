@@ -15,6 +15,7 @@ import { SessionContext } from "../../App";
 
 const Editor: React.FC = () => {
     const {docHTML, setDocHTML, isLoaded} = useContext(SessionContext)
+    const quillRef = useRef<ReactQuill>(null)
 
     useEffect(() => {
         const quillContainer = document.querySelector(".ql-container") as HTMLElement 
@@ -41,7 +42,12 @@ const Editor: React.FC = () => {
     }
 
     const handleExportDOCX = () => {
-        exportDOCX(docHTML);
+        const editor = quillRef.current?.getEditor()
+        if(!editor){
+            console.error("Quill Editor not found!")
+        }
+        const quillDelta = editor?.getContents()
+        exportDOCX(quillDelta)
     }
 
     return (
@@ -59,7 +65,7 @@ const Editor: React.FC = () => {
                 </Col>
             </Row>
             <Row id="editor-quill" className="flex-grow-1 d-flex overflow-auto">
-                <ReactQuill theme="snow" className="bg-light-subtle d-flex flex-column p-2" onChange={handleChangeDocument}/>
+                <ReactQuill theme="snow" className="bg-light-subtle d-flex flex-column p-2" ref={quillRef} onChange={handleChangeDocument}/>
             </Row>
         </Container>
     )
