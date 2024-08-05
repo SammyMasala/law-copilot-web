@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -6,8 +6,10 @@ import Image from "react-bootstrap/Image";
 
 import github from "../../static/icons8-github-25.png";
 import book from "../../static/icons8-book-25.png"
+import { SessionContext } from "../../App";
 
 const Header: React.FC = () => {
+    const {sessionURL} = useContext(SessionContext)
     return (
         <Container fluid>
             <Row className="d-flex">
@@ -23,6 +25,14 @@ const Header: React.FC = () => {
                 <Col className="d-flex justify-content-end">
                     <div>Icons by:</div>
                     <a href="https://icons8.com/icons">Icon8</a>
+                </Col>
+            </Row>
+            <Row className="d-flex">
+                <Col xs={12} className="d-flex justify-content-center">   
+                    *** SAVE THIS LINK TO YOUR SESSION ***
+                    <a href={sessionURL}>
+                        {sessionURL}
+                    </a>                 
                 </Col>
             </Row>
         </Container>

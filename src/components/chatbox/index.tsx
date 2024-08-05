@@ -1,35 +1,35 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import ListGroup from "react-bootstrap/ListGroup"
 import Form from "react-bootstrap/Form"
 import Button from "react-bootstrap/Button"
 import chatResponse from "../../api/chat.api";
+import { SessionContext } from "../../App";
 
 export interface IMessage {
     message: string;
     isUser: boolean;
 }
 
-interface IChatboxProps {
-    onChange: (messages: IMessage[]) => void
-}
-
-const Chatbox: React.FC<IChatboxProps> = ({ onChange }) => {
+const Chatbox: React.FC = () => {
+    const { messages, setMessages } = useContext(SessionContext)
     const [input, setInput] = useState<string>("");
-    const [messages, setMessages] = useState<IMessage[]>([]);
     const inputRef = useRef<HTMLInputElement>(null)
 
     useEffect(() => {
-        const quillContainer = document.querySelector("#chatbox-messages") as HTMLElement
-        if (quillContainer) {
-            quillContainer.style.height = `${quillContainer.offsetHeight.toString()}px`;
+        const chatboxContainer = document.querySelector("#chatbox-messages") as HTMLElement
+        if (chatboxContainer) {
+            chatboxContainer.style.height = `${chatboxContainer.offsetHeight.toString()}px`;
         }
     }, [])
 
     // Disable chatbox while waiting for reply
     useEffect(() => {
-        const sendMessage = async(messages: IMessage[]) => {
+        if (!messages.length || !messages.at(-1).isUser) {
+            return
+        }
+        const sendMessage = async (messages: IMessage[]) => {
             const reply = {
                 message: await chatResponse(messages),
                 isUser: false
@@ -38,12 +38,12 @@ const Chatbox: React.FC<IChatboxProps> = ({ onChange }) => {
         }
 
         const enableInputButton = (isEnabled: boolean = true) => {
-            if(isEnabled){
+            if (isEnabled) {
                 inputRef!.current!.disabled = false;
-                inputRef!.current!.placeholder = "Ask about..."   
-            }else{
+                inputRef!.current!.placeholder = "Ask about..."
+            } else {
                 inputRef!.current!.disabled = true;
-                inputRef!.current!.placeholder = "...awaiting reply..."   
+                inputRef!.current!.placeholder = "...awaiting reply..."
             }
         }
 
@@ -53,10 +53,8 @@ const Chatbox: React.FC<IChatboxProps> = ({ onChange }) => {
                 console.error(err)
             }).then(() => {
                 enableInputButton()
-            })            
-        } 
-        //Chain to parent
-        onChange(messages)
+            })
+        }
     }, [messages])
 
     const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -77,7 +75,7 @@ const Chatbox: React.FC<IChatboxProps> = ({ onChange }) => {
         <Container className="d-flex flex-column">
             <Row id="chatbox-messages" className="flex-grow-1 overflow-auto">
                 <ListGroup>
-                    {messages.map((message, index) => {
+                    {messages.map((message: IMessage, index: number) => {
                         return (
                             <ListGroup.Item
                                 className={`d-flex border border-0 bg-transparent
