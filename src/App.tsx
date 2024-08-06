@@ -4,6 +4,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
 import { v4 as uuidv4 } from "uuid"; 
+import { useNavigate } from 'react-router-dom';
 
 import Header from './components/header';
 import Editor from './components/editor';
@@ -59,6 +60,7 @@ const HomePage:React.FC = () => {
     const autosaveInterval = AUTOSAVE_INTERVAL
     const location = useLocation()
     const params = new URLSearchParams(location.search)
+    const navigate = useNavigate()
 
     // generate id and set Session URL
     useEffect(() => {
@@ -68,7 +70,14 @@ const HomePage:React.FC = () => {
         }
         setID(id)
         setSessionURL(`${window.location.origin}/?id=${id}`)
-    }, [])    
+    }, [])   
+    
+    // Nav to Current Session 
+    useEffect(() => {
+        if (isLoaded){
+            navigate(`/?id=${id}`)
+        }
+    }, [isLoaded])
 
     // Load Session
     useEffect(() => {
