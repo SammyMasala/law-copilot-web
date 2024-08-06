@@ -1,7 +1,8 @@
 import React, { createContext, useState } from "react";
 import "@testing-library/jest-dom"
 import {render, screen, cleanup} from "@testing-library/react"
-import Header from "../../../src/components/header";
+import Chatbox from "../../../src/components/chatbox";
+import { IMessage } from "../../../src/components/chatbox";
 
 afterEach(()=> {
     cleanup();
@@ -9,26 +10,30 @@ afterEach(()=> {
 
 describe("Header Component", () => {
     const mockContext:React.Context<any> = createContext(null)
+    const mockMessages:IMessage[] = [{message: "test message", isUser: false}]
     const MockContextProvider = ({children}: any) => {
-        const [sessionURL, setSessionURL] = useState<string>("https://www.test.com")
+        const [messages, setMessages] = useState<IMessage[]>(mockMessages)
+        const [isLoaded, setIsLoaded] = useState<boolean>(true)
         return (
             <mockContext.Provider 
-                value={{sessionURL}}>
+                value={{messages, setMessages, isLoaded}}>
                     {children}
             </mockContext.Provider>
         )
     }
-    
+
+
     test("initial state", async () => {
         const TestComponent:React.FC = () => {
             return (
                 <MockContextProvider>
-                    <Header context={mockContext}/>
+                    <Chatbox context={mockContext}/>
                 </MockContextProvider>
             )
-        }
+        }     
+    
         render(<TestComponent />)
-        const title = screen.getByText("Law Copilot")
+        const title = screen.getByText("test message")
         expect(title).toBeInTheDocument();
     })
 
@@ -36,10 +41,11 @@ describe("Header Component", () => {
         const TestComponent:React.FC = () => {
             return (
                 <MockContextProvider>
-                    <Header context={mockContext}/>
+                    <Chatbox context={mockContext}/>
                 </MockContextProvider>
             )
         }     
+    
         const {asFragment} = render(<TestComponent />)
         expect(asFragment()).toMatchSnapshot();
     })

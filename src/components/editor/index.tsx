@@ -11,10 +11,13 @@ import "react-quill-new/dist/quill.snow.css";
 import docx from "../../static/icons8-docx-50.png";
 import pdf from "../../static/icons8-pdf-50.png"; 
 import { exportDOCX, exportPDF } from "../../libs/exportFile";
-import { SessionContext } from "../../App";
 
-const Editor: React.FC = () => {
-    const {docHTML, setDocHTML, isLoaded} = useContext(SessionContext)
+interface IEditorProps{
+    context: React.Context<any>
+}
+
+const Editor: React.FC<IEditorProps> = (props: IEditorProps) => {
+    const {docHTML, setDocHTML, isLoaded} = useContext(props.context)
     const quillRef = useRef<ReactQuill>(null)
 
     useEffect(() => {

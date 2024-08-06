@@ -1,0 +1,54 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Header Component snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="d-flex flex-column container"
+  >
+    <div
+      class="flex-grow-1 overflow-auto row"
+      id="chatbox-messages"
+      style="height: 0px;"
+    >
+      <div
+        class="list-group"
+      >
+        <div
+          class="d-flex border border-0 bg-transparent
+                                justify-content-start list-group-item"
+        >
+          <button
+            class="btn btn-secondary"
+            style="word-break: break-all; overflow-wrap: break-word; text-align: justify;"
+            type="button"
+          >
+            test message
+          </button>
+        </div>
+      </div>
+    </div>
+    <div
+      class="row"
+      id="chatbox-input"
+    >
+      <form
+        class="d-flex"
+      >
+        <input
+          aria-describedby="user message input block"
+          class="form-control"
+          name="input"
+          type="text"
+          value=""
+        />
+        <button
+          class="btn btn-dark"
+          type="submit"
+        >
+          Send
+        </button>
+      </form>
+    </div>
+  </div>
+</DocumentFragment>
+`;

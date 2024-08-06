@@ -1,7 +1,7 @@
 import React, { createContext, useState } from "react";
 import "@testing-library/jest-dom"
 import {render, screen, cleanup} from "@testing-library/react"
-import Header from "../../../src/components/header";
+import Editor from "../../../src/components/editor";
 
 afterEach(()=> {
     cleanup();
@@ -9,26 +9,30 @@ afterEach(()=> {
 
 describe("Header Component", () => {
     const mockContext:React.Context<any> = createContext(null)
+    const mockDocHTML = "<p>this is a test doc</p>"
     const MockContextProvider = ({children}: any) => {
-        const [sessionURL, setSessionURL] = useState<string>("https://www.test.com")
+        const [docHTML, setDocHTML] = useState<string>(mockDocHTML)
+        const [isLoaded, setIsLoaded] = useState<boolean>(true)
         return (
             <mockContext.Provider 
-                value={{sessionURL}}>
+                value={{docHTML, setDocHTML, isLoaded}}>
                     {children}
             </mockContext.Provider>
         )
     }
-    
+
+
     test("initial state", async () => {
         const TestComponent:React.FC = () => {
             return (
                 <MockContextProvider>
-                    <Header context={mockContext}/>
+                    <Editor context={mockContext}/>
                 </MockContextProvider>
             )
-        }
+        }     
+    
         render(<TestComponent />)
-        const title = screen.getByText("Law Copilot")
+        const title = screen.getByText("this is a test doc")
         expect(title).toBeInTheDocument();
     })
 
@@ -36,10 +40,11 @@ describe("Header Component", () => {
         const TestComponent:React.FC = () => {
             return (
                 <MockContextProvider>
-                    <Header context={mockContext}/>
+                    <Editor context={mockContext}/>
                 </MockContextProvider>
             )
         }     
+    
         const {asFragment} = render(<TestComponent />)
         expect(asFragment()).toMatchSnapshot();
     })
