@@ -1,0 +1,63 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Header Component snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="container-fluid"
+  >
+    <div
+      class="d-flex row"
+    >
+      <div
+        class="d-flex justify-content-start col"
+      >
+        <img
+          class="bg-light rounded-circle"
+          src=""
+        />
+        <div>
+           Law Copilot 
+        </div>
+      </div>
+      <div
+        class="d-flex justify-content-center col-2"
+      >
+        <a
+          href="https://github.com/SammyMasala/law-copilot-web"
+        >
+          <img
+            class="bg-light rounded-circle"
+            src=""
+          />
+        </a>
+      </div>
+      <div
+        class="d-flex justify-content-end col"
+      >
+        <div>
+          Icons by:
+        </div>
+        <a
+          href="https://icons8.com/icons"
+        >
+          Icon8
+        </a>
+      </div>
+    </div>
+    <div
+      class="d-flex row"
+    >
+      <div
+        class="d-flex justify-content-center col-12"
+      >
+        *** SAVE THIS LINK TO YOUR SESSION ***
+        <a
+          href="https://www.test.com"
+        >
+          https://www.test.com
+        </a>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;

@@ -6,10 +6,13 @@ import Image from "react-bootstrap/Image";
 
 import github from "../../static/icons8-github-25.png";
 import book from "../../static/icons8-book-25.png"
-import { SessionContext } from "../../App";
 
-const Header: React.FC = () => {
-    const {sessionURL} = useContext(SessionContext)
+interface IHeaderProps {
+    context: React.Context<any>
+}
+
+const Header: React.FC<IHeaderProps> = (props: IHeaderProps) => {
+    const {sessionURL} = useContext(props.context)
     return (
         <Container fluid>
             <Row className="d-flex">

@@ -5,15 +5,18 @@ import ListGroup from "react-bootstrap/ListGroup"
 import Form from "react-bootstrap/Form"
 import Button from "react-bootstrap/Button"
 import chatResponse from "../../api/chat.api";
-import { SessionContext } from "../../App";
 
 export interface IMessage {
     message: string;
     isUser: boolean;
 }
 
-const Chatbox: React.FC = () => {
-    const { messages, setMessages } = useContext(SessionContext)
+interface IChatboxProps{
+    context: React.Context<any>
+}
+    
+const Chatbox: React.FC<IChatboxProps> = (props: IChatboxProps) => {
+    const { messages, setMessages } = useContext(props.context)
     const [input, setInput] = useState<string>("");
     const inputRef = useRef<HTMLInputElement>(null)
 
