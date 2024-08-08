@@ -19,24 +19,25 @@ interface ISessionProvider{
 const SessionContext: Context<any> = createContext(null)
 
 const SessionProvider = ({children}: ISessionProvider) => {
+    const initialMessage: IMessage = { 
+        message: "Hi, I am your assistant. I am powered by Mistral.AI. Ask me anything!", 
+        isUser: false
+    }
+
     const [id, setID] = useState<string>("")
     const [docHTML, setDocHTML] = useState<string>("")
-    const [messages, setMessages] = useState<IMessage[]>([])
+    const [messages, setMessages] = useState<IMessage[]>([initialMessage])
     const [isLoaded, setIsLoaded] = useState<boolean>(false)
     const [sessionURL, setSessionURL] = useState<string>("")
     const [autosaveTimer, setAutosaveTimer] = useState<number>(AUTOSAVE_INTERVAL)
-    const [isChanges, setIsChanges] = useState<boolean>(false)
 
-    const resetTimer = (interval: number) => {
-        setAutosaveTimer(interval)
-    }
-    
+
     const autosave = async () => {
         try{
             console.log("Saving", docHTML)
             const result = await putSession(id, docHTML, messages)
             console.log(result)
-            resetTimer(AUTOSAVE_INTERVAL)
+            setAutosaveTimer(AUTOSAVE_INTERVAL)
         }catch(err){
             console.log(err)
         }finally{
@@ -59,9 +60,6 @@ const SessionProvider = ({children}: ISessionProvider) => {
             autosaveTimer,
             setAutosaveTimer,
             autosave,
-            isChanges,
-            setIsChanges,
-            resetTimer
         }}>
             {children}
         </SessionContext.Provider>
@@ -81,9 +79,7 @@ const HomePage:React.FC = () => {
         autosaveTimer,
         setAutosaveTimer,
         autosave,
-        resetTimer
     } = useContext(SessionContext)
-    const autosaveInterval = AUTOSAVE_INTERVAL
     const location = useLocation()
     const params = new URLSearchParams(location.search)
     const navigate = useNavigate()

@@ -7,7 +7,7 @@ import Image from "react-bootstrap/Image";
 import trello from "../../static/icons8-trello-25.png"
 import github from "../../static/icons8-github-25.png";
 import book from "../../static/icons8-book-25.png"
-import { AUTOSAVE_INTERVAL, URL_GITHUB, URL_ICONS8, URL_TRELLO } from "../../config";
+import { URL_GITHUB, URL_ICONS8, URL_TRELLO } from "../../config";
 import { Button } from "react-bootstrap";
 
 interface IHeaderProps {
@@ -15,7 +15,8 @@ interface IHeaderProps {
 }
 
 const Header: React.FC<IHeaderProps> = (props: IHeaderProps) => {
-    const {sessionURL, autosaveTimer, autosave, messages, docHTML, resetTimer} = useContext(props.context)
+    const {context} = props
+    const {sessionURL, autosaveTimer, autosave, messages, docHTML} = useContext(context)
     const saveButtonRef = useRef<HTMLButtonElement>(null)
     const [saveButtonState, setSaveButtonState] = useState<boolean>(true)
 

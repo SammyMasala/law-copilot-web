@@ -17,7 +17,8 @@ interface IEditorProps{
 }
 
 const Editor: React.FC<IEditorProps> = (props: IEditorProps) => {
-    const {docHTML, setDocHTML, isLoaded} = useContext(props.context)
+    const {context} = props
+    const {docHTML, setDocHTML, isLoaded} = useContext(context)
     const quillRef = useRef<ReactQuill>(null)
 
     useEffect(() => {
