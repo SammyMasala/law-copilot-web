@@ -11,18 +11,36 @@ exports[`Header Component snapshot 1`] = `
       <div
         class="d-flex justify-content-start col"
       >
-        <img
-          class="bg-light rounded-circle"
-          src=""
-        />
+        <a
+          class="me-1"
+          href="https://www.test.com"
+        >
+          <img
+            class="bg-light rounded-circle"
+            src=""
+          />
+        </a>
         <div>
            Law Copilot 
         </div>
       </div>
       <div
         class="d-flex justify-content-center col-2"
+      />
+      <div
+        class="d-flex justify-content-end col"
       >
         <a
+          class="me-1"
+          href="https://trello.com/b/kkimaj8A/law-copilot"
+        >
+          <img
+            class="bg-light rounded"
+            src=""
+          />
+        </a>
+        <a
+          class="me-1"
           href="https://github.com/SammyMasala/law-copilot-web"
         >
           <img
@@ -30,14 +48,11 @@ exports[`Header Component snapshot 1`] = `
             src=""
           />
         </a>
-      </div>
-      <div
-        class="d-flex justify-content-end col"
-      >
         <div>
           Icons by:
         </div>
         <a
+          class="ms-1 me-1"
           href="https://icons8.com/icons"
         >
           Icon8
