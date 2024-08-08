@@ -31,7 +31,6 @@ const Editor: React.FC<IEditorProps> = (props: IEditorProps) => {
         if(!isLoaded){
             return
         }
-        console.log("test")
         const editor = document.getElementsByClassName('ql-editor')
         editor[0].innerHTML = docHTML
     }, [isLoaded])

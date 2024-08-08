@@ -24,6 +24,25 @@ const SessionProvider = ({children}: ISessionProvider) => {
     const [messages, setMessages] = useState<IMessage[]>([])
     const [isLoaded, setIsLoaded] = useState<boolean>(false)
     const [sessionURL, setSessionURL] = useState<string>("")
+    const [autosaveTimer, setAutosaveTimer] = useState<number>(AUTOSAVE_INTERVAL)
+    const [isChanges, setIsChanges] = useState<boolean>(false)
+
+    const resetTimer = (interval: number) => {
+        setAutosaveTimer(interval)
+    }
+    
+    const autosave = async () => {
+        try{
+            console.log("Saving", docHTML)
+            const result = await putSession(id, docHTML, messages)
+            console.log(result)
+            resetTimer(AUTOSAVE_INTERVAL)
+        }catch(err){
+            console.log(err)
+        }finally{
+            return
+        }
+    }
 
     return (
         <SessionContext.Provider value={{
@@ -37,6 +56,12 @@ const SessionProvider = ({children}: ISessionProvider) => {
             setIsLoaded, 
             sessionURL, 
             setSessionURL,
+            autosaveTimer,
+            setAutosaveTimer,
+            autosave,
+            isChanges,
+            setIsChanges,
+            resetTimer
         }}>
             {children}
         </SessionContext.Provider>
@@ -49,14 +74,15 @@ const HomePage:React.FC = () => {
         setID, 
         docHTML, 
         setDocHTML, 
-        messages, 
         setMessages, 
         isLoaded, 
         setIsLoaded,
-        sessionURL,
-        setSessionURL
+        setSessionURL,
+        autosaveTimer,
+        setAutosaveTimer,
+        autosave,
+        resetTimer
     } = useContext(SessionContext)
-    const [autosaveTimer, setAutosaveTimer] = useState<number>(0)
     const autosaveInterval = AUTOSAVE_INTERVAL
     const location = useLocation()
     const params = new URLSearchParams(location.search)
@@ -72,6 +98,23 @@ const HomePage:React.FC = () => {
         setSessionURL(`${window.location.origin}/?id=${id}`)
     }, [])   
     
+    //Autosave timer
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setAutosaveTimer((prev: number) => {
+                return prev - 1                
+            })         
+        }, 1000)        
+        return () => clearInterval(interval)
+    },[]) 
+
+    // Autosave
+    useEffect(() => {
+        if(autosaveTimer <= 0){
+            autosave()
+        }
+    }, [autosaveTimer])
+
     // Nav to Current Session 
     useEffect(() => {
         if (isLoaded){
@@ -104,30 +147,9 @@ const HomePage:React.FC = () => {
         })      
     }, [id])
 
-    // Autosave
-    useEffect(() => {
-        const autosave = async () => {
-            try{
-                console.log("Saving", docHTML)
-                const result = await putSession(id, docHTML, messages)
-                console.log(result)
-            }catch(err){
-                console.log(err)
-            }finally{
-                return
-            }
-        }
-        if(autosaveTimer >= autosaveInterval){
-            autosave()
-            setAutosaveTimer(0)
-        }else{  
-            setTimeout(() => {setAutosaveTimer(autosaveTimer + 1)}, 1000)
-        }       
-    }, [autosaveTimer])
-
-    //DEBUG printing
-    useEffect(() => {console.log(autosaveTimer)}, [autosaveTimer])
-    useEffect(() => {console.log(messages, docHTML)}, [messages, docHTML])
+    // //DEBUG printing
+    // useEffect(() => {console.log(autosaveTimer)}, [autosaveTimer])
+    // useEffect(() => {console.log(messages, docHTML)}, [messages, docHTML])
 
     return (
         <Container className='bg-dark-subtle d-flex flex-column vh-100 overflow-auto' fluid>
