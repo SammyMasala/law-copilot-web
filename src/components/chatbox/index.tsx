@@ -16,7 +16,9 @@ interface IChatboxProps{
 }
     
 const Chatbox: React.FC<IChatboxProps> = (props: IChatboxProps) => {
-    const { messages, setMessages } = useContext(props.context)
+    const {context} = props
+    const { messages, setMessages } = useContext(context)
+    const [isInputEnabled, setIsInputEnabled] = useState<boolean>(true)
     const [input, setInput] = useState<string>("");
     const inputRef = useRef<HTMLInputElement>(null)
 
@@ -40,25 +42,25 @@ const Chatbox: React.FC<IChatboxProps> = (props: IChatboxProps) => {
             setMessages([...messages, reply])
         }
 
-        const enableInputButton = (isEnabled: boolean = true) => {
-            if (isEnabled) {
-                inputRef!.current!.disabled = false;
-                inputRef!.current!.placeholder = "Ask about..."
-            } else {
-                inputRef!.current!.disabled = true;
-                inputRef!.current!.placeholder = "...awaiting reply..."
-            }
-        }
-
         if (messages.length && messages.at(-1)?.isUser) {
-            enableInputButton(false)
+            setIsInputEnabled(prev => false)
             sendMessage(messages).catch(err => {
                 console.error(err)
             }).then(() => {
-                enableInputButton()
+                setIsInputEnabled(prev => true)
             })
         }
     }, [messages])
+
+    useEffect(() => {
+        if (isInputEnabled) {
+            inputRef!.current!.disabled = false;
+            inputRef!.current!.placeholder = "Ask about..."
+        } else {
+            inputRef!.current!.disabled = true;
+            inputRef!.current!.placeholder = "...awaiting reply..."
+        }
+    }, [isInputEnabled])
 
     const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
