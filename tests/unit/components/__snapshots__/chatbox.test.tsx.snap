@@ -38,6 +38,7 @@ exports[`Header Component snapshot 1`] = `
           aria-describedby="user message input block"
           class="form-control"
           name="input"
+          placeholder="Ask about..."
           type="text"
           value=""
         />
