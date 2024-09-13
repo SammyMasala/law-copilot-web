@@ -14,7 +14,7 @@ interface IHeaderProps {
     context: React.Context<any>
 }
 
-const Header: React.FC<IHeaderProps> = (props: IHeaderProps) => {
+export const Header: React.FC<IHeaderProps> = (props: IHeaderProps) => {
     const {context} = props
     const {sessionURL, autosaveTimer, autosave, messages, docHTML} = useContext(context)
     const saveButtonRef = useRef<HTMLButtonElement>(null)
@@ -77,5 +77,3 @@ const Header: React.FC<IHeaderProps> = (props: IHeaderProps) => {
         </Container>
     )
 }
-
-export default Header;

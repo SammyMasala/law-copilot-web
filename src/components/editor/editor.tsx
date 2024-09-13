@@ -16,7 +16,7 @@ interface IEditorProps{
     context: React.Context<any>
 }
 
-const Editor: React.FC<IEditorProps> = (props: IEditorProps) => {
+export const Editor: React.FC<IEditorProps> = (props: IEditorProps) => {
     const {context} = props
     const {docHTML, setDocHTML, isLoaded} = useContext(context)
     const quillRef = useRef<ReactQuill>(null)
@@ -73,5 +73,3 @@ const Editor: React.FC<IEditorProps> = (props: IEditorProps) => {
         </Container>
     )
 } 
-
-export default Editor; 

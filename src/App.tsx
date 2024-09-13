@@ -3,14 +3,17 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
-import { v4 as uuidv4 } from "uuid"; 
 import { useNavigate } from 'react-router-dom';
 
-import Header from './components/header';
-import Editor from './components/editor';
-import Chatbox, { IMessage } from './components/chatbox';
 import { getSession, putSession } from './api/sessions.api';
 import { AUTOSAVE_INTERVAL } from './config';
+import { Board, Note } from './components/board';
+import { Message } from './components/chatbox';
+import { Header } from './components/header';
+import { Editor } from './components/editor';
+import { randomId } from './utils/randomId';
+import { NoteNode } from './components/board/noteNode';
+import { SessionData } from './api/types.api';
 
 interface ISessionProvider{
     children: ReactNode
@@ -19,14 +22,15 @@ interface ISessionProvider{
 const SessionContext: Context<any> = createContext(null)
 
 const SessionProvider = ({children}: ISessionProvider) => {
-    const initialMessage: IMessage = { 
+    const initialMessage: Message = { 
         message: "Hi, I am your assistant. I am powered by Mistral.AI. Ask me anything!", 
         isUser: false
     }
 
     const [id, setID] = useState<string>("")
     const [docHTML, setDocHTML] = useState<string>("")
-    const [messages, setMessages] = useState<IMessage[]>([initialMessage])
+    const [noteNodes, setNoteNodes] = useState<NoteNode[]>([])
+    const [messages, setMessages] = useState<Message[]>([initialMessage])
     const [isLoaded, setIsLoaded] = useState<boolean>(false)
     const [sessionURL, setSessionURL] = useState<string>("")
     const [autosaveTimer, setAutosaveTimer] = useState<number>(AUTOSAVE_INTERVAL)
@@ -35,13 +39,12 @@ const SessionProvider = ({children}: ISessionProvider) => {
     const autosave = async () => {
         try{
             console.log("Saving", docHTML)
-            const result = await putSession(id, docHTML, messages)
+            const result = await putSession({id, docHTML, noteNodes, messages})
             console.log(result)
-            setAutosaveTimer(AUTOSAVE_INTERVAL)
         }catch(err){
             console.log(err)
         }finally{
-            return
+            setAutosaveTimer(AUTOSAVE_INTERVAL)
         }
     }
 
@@ -51,6 +54,8 @@ const SessionProvider = ({children}: ISessionProvider) => {
             setID, 
             docHTML, 
             setDocHTML, 
+            noteNodes,
+            setNoteNodes,
             messages, 
             setMessages, 
             isLoaded, 
@@ -70,8 +75,8 @@ const HomePage:React.FC = () => {
     const {
         id, 
         setID, 
-        docHTML, 
         setDocHTML, 
+        setNoteNodes,
         setMessages, 
         isLoaded, 
         setIsLoaded,
@@ -88,7 +93,7 @@ const HomePage:React.FC = () => {
     useEffect(() => {
         let id = params.get("id")
         if(!id){
-            id = uuidv4()
+            id = randomId(10)
         }
         setID(id)
         setSessionURL(`${window.location.origin}/?id=${id}`)
@@ -126,15 +131,22 @@ const HomePage:React.FC = () => {
 
         getSession(id).catch((err: any) => {
             console.error(err)
-        }).then((result: any) => {
+        }).then((result) => {
             if(!result){
                 return
             }
             // Pass values to components
-            setDocHTML(result?.doc_html)
-            setMessages(result?.messages.map((message: string) => {
-                return JSON.parse(message)
-            }))
+            setDocHTML(result.docHTML)
+            if(result.messages){
+                setMessages(result.messages.map((message: string) => {
+                    return JSON.parse(message)
+                }))
+            }
+            if(result.noteNodes){
+                setNoteNodes(result.noteNodes.map((node: string) => {
+                    return JSON.parse(node)
+                }))
+            }
         }).catch((err: any) => {
             console.log(err)
         }).then(() => {
@@ -153,12 +165,15 @@ const HomePage:React.FC = () => {
                 <Header context={SessionContext}/>
             </Row>
             <Row className="flex-grow-1" id="content">
-                <Col xs={12} md={8} className="d-flex" id="content-editor">
+                <Col xs={12} md={8} className="d-flex" id="content-graph">
+                    <Board context={SessionContext}/>
+                </Col>
+                <Col xs={0} md={4} className="d-flex" id="content-editor">
                     <Editor context={SessionContext}/>
                 </Col>
-                <Col xs={0} md={4} className="d-flex bg-secondary bg-opacity-50" id="content-chatbox">
+                {/* <Col xs={0} md={4} className="d-flex bg-secondary bg-opacity-50" id="content-chatbox">
                     <Chatbox context={SessionContext}/>
-                </Col>
+                </Col> */}
             </Row>
         </Container>
     ) 
