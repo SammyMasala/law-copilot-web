@@ -1,7 +1,7 @@
 import React, { createContext, useState } from "react";
 import "@testing-library/jest-dom"
 import {render, screen, cleanup} from "@testing-library/react"
-import Editor from "../../../src/components/editor/editor";
+import Editor from "../../../src/components/Editor/Editor";
 
 afterEach(()=> {
     cleanup();

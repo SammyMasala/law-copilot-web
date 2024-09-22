@@ -4,14 +4,15 @@ import Row from "react-bootstrap/Row";
 import ListGroup from "react-bootstrap/ListGroup"
 import Form from "react-bootstrap/Form"
 import Button from "react-bootstrap/Button"
-import chatResponse from "../../api/chat.api";
 import { Message } from ".";
+import { ChatService } from "@src/libs";
 
 interface IChatboxProps{
     context: React.Context<any>
 }
     
 export const Chatbox: React.FC<IChatboxProps> = (props: IChatboxProps) => {
+    const chatService = new ChatService;
     const {context} = props
     const { messages, setMessages } = useContext(context)
     const [isInputEnabled, setIsInputEnabled] = useState<boolean>(true)
@@ -32,7 +33,7 @@ export const Chatbox: React.FC<IChatboxProps> = (props: IChatboxProps) => {
         }
         const sendMessage = async (messages: Message[]) => {
             const reply = {
-                message: await chatResponse(messages),
+                message: await chatService.chatResponse(messages),
                 isUser: false
             }
             setMessages([...messages, reply])

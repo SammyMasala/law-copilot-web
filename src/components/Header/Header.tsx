@@ -16,7 +16,7 @@ interface IHeaderProps {
 
 export const Header: React.FC<IHeaderProps> = (props: IHeaderProps) => {
     const {context} = props
-    const {sessionURL, autosaveTimer, autosave, messages, docHTML} = useContext(context)
+    const {sessionURL, autosaveTimer, saveSession, messages, docHTML} = useContext(context)
     const saveButtonRef = useRef<HTMLButtonElement>(null)
     const [saveButtonState, setSaveButtonState] = useState<boolean>(true)
 
@@ -38,7 +38,7 @@ export const Header: React.FC<IHeaderProps> = (props: IHeaderProps) => {
 
     // onClick saveButton
     const handleSaveButtonClicked = () => {
-        autosave()    
+        saveSession()    
         setSaveButtonState(false)   
     }
 

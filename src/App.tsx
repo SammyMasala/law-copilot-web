@@ -5,15 +5,15 @@ import Col from "react-bootstrap/Col";
 import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
-import { getSession, putSession } from './api/sessions.api';
-import { AUTOSAVE_INTERVAL } from './config';
-import { Board, Note } from './components/board';
-import { Message } from './components/chatbox';
-import { Header } from './components/header';
-import { Editor } from './components/editor';
+import { AUTOSAVE_INTERVAL, INITIAL_MESSAGE } from './config';
+import { Message } from './components/Chatbox';
+import { Header } from './components/Header';
+import { Editor } from './components/Editor';
 import { randomId } from './utils/randomId';
-import { NoteNode } from './components/board/noteNode';
-import { SessionData } from './api/types.api';
+import { SessionService } from './libs/sessionService';
+import { NoteNode } from './components/Board/backup';
+import { SessionData } from './libs';
+import { Board } from './components/Board';
 
 interface ISessionProvider{
     children: ReactNode
@@ -22,36 +22,58 @@ interface ISessionProvider{
 const SessionContext: Context<any> = createContext(null)
 
 const SessionProvider = ({children}: ISessionProvider) => {
-    const initialMessage: Message = { 
-        message: "Hi, I am your assistant. I am powered by Mistral.AI. Ask me anything!", 
-        isUser: false
-    }
+    const sessionService = new SessionService();
 
-    const [id, setID] = useState<string>("")
+    const [sessionID, setSessionID] = useState<string>("")
     const [docHTML, setDocHTML] = useState<string>("")
     const [noteNodes, setNoteNodes] = useState<NoteNode[]>([])
-    const [messages, setMessages] = useState<Message[]>([initialMessage])
+    const [messages, setMessages] = useState<Message[]>([INITIAL_MESSAGE])
     const [isLoaded, setIsLoaded] = useState<boolean>(false)
     const [sessionURL, setSessionURL] = useState<string>("")
     const [autosaveTimer, setAutosaveTimer] = useState<number>(AUTOSAVE_INTERVAL)
 
-
-    const autosave = async () => {
+    async function saveSession(): Promise<void> {
         try{
-            console.log("Saving", docHTML)
-            const result = await putSession({id, docHTML, noteNodes, messages})
+            console.log("Saving session:", sessionID)
+            const result = await sessionService.saveSession({
+                sessionID, docHTML, noteNodes, messages
+            })
             console.log(result)
-        }catch(err){
-            console.log(err)
+        }catch (error){
+            console.error(error);
         }finally{
             setAutosaveTimer(AUTOSAVE_INTERVAL)
         }
     }
 
+    async function loadSession():Promise<void> {
+        try{
+            console.log("Loading Session:", sessionID)
+
+            //Load Session
+            const sessionData:SessionData = await sessionService.loadSession(sessionID)
+
+            console.log(sessionData)
+
+            // Pass values to components
+            if(sessionData.docHTML){
+                setDocHTML(sessionData.docHTML)
+            }
+            if(sessionData.messages){
+                setMessages(sessionData.messages)
+            }
+            if(sessionData.noteNodes){
+                setNoteNodes(sessionData.noteNodes)
+            }
+        }catch(error){
+            throw error;
+        }
+    }
+
     return (
         <SessionContext.Provider value={{
-            id, 
-            setID, 
+            sessionID, 
+            setSessionID, 
             docHTML, 
             setDocHTML, 
             noteNodes,
@@ -62,9 +84,10 @@ const SessionProvider = ({children}: ISessionProvider) => {
             setIsLoaded, 
             sessionURL, 
             setSessionURL,
+            saveSession,
+            loadSession,
             autosaveTimer,
-            setAutosaveTimer,
-            autosave,
+            setAutosaveTimer
         }}>
             {children}
         </SessionContext.Provider>
@@ -73,18 +96,16 @@ const SessionProvider = ({children}: ISessionProvider) => {
 
 const HomePage:React.FC = () => {
     const {
-        id, 
-        setID, 
-        setDocHTML, 
-        setNoteNodes,
-        setMessages, 
+        sessionID, 
+        setSessionID, 
         isLoaded, 
         setIsLoaded,
         setSessionURL,
+        saveSession,
+        loadSession,
         autosaveTimer,
-        setAutosaveTimer,
-        autosave,
-    } = useContext(SessionContext)
+        setAutosaveTimer
+} = useContext(SessionContext)
     const location = useLocation()
     const params = new URLSearchParams(location.search)
     const navigate = useNavigate()
@@ -95,7 +116,7 @@ const HomePage:React.FC = () => {
         if(!id){
             id = randomId(10)
         }
-        setID(id)
+        setSessionID(id)
         setSessionURL(`${window.location.origin}/?id=${id}`)
     }, [])   
     
@@ -112,48 +133,30 @@ const HomePage:React.FC = () => {
     // Autosave
     useEffect(() => {
         if(autosaveTimer <= 0){
-            autosave()
+            saveSession().catch((error: any) => {
+                console.log(error)
+            })
         }
     }, [autosaveTimer])
 
     // Nav to Current Session 
     useEffect(() => {
         if (isLoaded){
-            navigate(`/?id=${id}`)
+            navigate(`/?id=${sessionID}`)
         }
     }, [isLoaded])
 
     // Load Session
     useEffect(() => {
-        if(!id){
+        if(!sessionID){
             return
         }
 
-        getSession(id).catch((err: any) => {
-            console.error(err)
-        }).then((result) => {
-            if(!result){
-                return
-            }
-            // Pass values to components
-            setDocHTML(result.docHTML)
-            if(result.messages){
-                setMessages(result.messages.map((message: string) => {
-                    return JSON.parse(message)
-                }))
-            }
-            if(result.noteNodes){
-                setNoteNodes(result.noteNodes.map((node: string) => {
-                    return JSON.parse(node)
-                }))
-            }
-        }).catch((err: any) => {
-            console.log(err)
-        }).then(() => {
+        loadSession(sessionID).then(() => {
             // Set "Loaded" state
             setIsLoaded(true)
         })      
-    }, [id])
+    }, [sessionID])
 
     // //DEBUG printing
     // useEffect(() => {console.log(autosaveTimer)}, [autosaveTimer])

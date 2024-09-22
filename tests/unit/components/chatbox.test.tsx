@@ -1,8 +1,8 @@
 import React, { createContext, useState } from "react";
 import "@testing-library/jest-dom"
 import {render, screen, cleanup} from "@testing-library/react"
-import Chatbox from "../../../src/components/chatbox";
-import { IMessage } from "../../../src/components/chatbox";
+import Chatbox from "../../../src/components/Chatbox";
+import { IMessage } from "../../../src/components/Chatbox";
 
 afterEach(()=> {
     cleanup();

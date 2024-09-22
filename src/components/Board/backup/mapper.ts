@@ -2,7 +2,7 @@ import { Note } from "./types";
 import { Node } from "@xyflow/react";
 import { randomId } from "@src/utils/randomId";
 
-export function mapNotetoNoteNode(note: Note, deleteFunc: (id:string) => void):Node{
+export function mapNotetoNoteNode(note: Note, deleteFunc: (id: string) => void): Node {
     const id = randomId(6)
 
     const noteNode: Node = {

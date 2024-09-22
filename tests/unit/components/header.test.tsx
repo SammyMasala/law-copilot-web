@@ -1,7 +1,7 @@
 import React, { createContext, useState } from "react";
 import "@testing-library/jest-dom"
 import {render, screen, cleanup} from "@testing-library/react"
-import Header from "../../../src/components/header/header";
+import Header from "../../../src/components/Header/Header";
 
 afterEach(()=> {
     cleanup();
