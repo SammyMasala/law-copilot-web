@@ -1,6 +1,7 @@
 export enum API_ROUTES {
     CHAT =  "chat",
-    SESSION = "session"
+    SUBJECT = "subject",
+    SESSION = "session",
 }
 
 // Legacy

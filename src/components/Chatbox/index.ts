@@ -1,2 +1,1 @@
-export * from "./Chatbox"
-export * from "./types"
+export * from "./Chatbox";

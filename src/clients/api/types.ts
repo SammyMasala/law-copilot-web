@@ -8,17 +8,20 @@ export type ApiResponse = {
 
 // chat
 export type ChatRequest = {
-    messages: {isUser: boolean, message: string}[]
+    messages: string[]
 }
-export type ChatResponse = {
-    subject: string
-} & ApiResponse & Record<string,any>
+export type ChatResponse = ApiResponse 
+
+// subject
+export type SubjectRequest = {
+    messages: string[]
+}
+export type SubjectResponse = ApiResponse & Record<string,any>
 
 // load
 export type LoadRequest = {
     id: string
 }
-
 export type LoadResponse = {
     id: string,
     note_nodes?: string[],
@@ -31,11 +34,15 @@ export type LoadResponse = {
 // save
 export type SaveRequest = {
     id: string,
-    note_nodes: any[],
+    note_nodes: string[],
     doc_html: string,
 
     // Legacy
-    messages?: any
+    messages?: string[]
 }
-
 export type SaveResponse = ApiResponse
+
+// LEGACY
+export type LegacyChatResponse = string
+
+

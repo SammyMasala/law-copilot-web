@@ -1,5 +1,4 @@
-import { NoteNode } from "@src/components/Board/backup/noteNode"
-import { Message } from "@src/components/Chatbox"
+import { Node } from "@xyflow/react"
 
 // general
 export type ApiResponse = {
@@ -10,7 +9,7 @@ export type ApiResponse = {
 export type SessionData = {
     sessionID: string,
     docHTML: string,
-    noteNodes?: NoteNode[]
+    noteNodes?: any[]
 
     // LEGACY
     messages?: Message[]
@@ -28,3 +27,30 @@ export type LoadResponse = {
 
 // save
 export type SaveResponse = ApiResponse
+
+// chat
+export type Message = {
+    message: string;
+    isUser: boolean;
+}
+
+// subject
+export type SubjectData = {
+    subject: string,
+    isLaw: boolean,
+    content: Record<string, string>
+    related?: Record<string, string>[]
+}
+
+export type Note = {
+    subject: string,
+    content: Record<string, string>,
+    related?: string[]
+}
+
+export type NoteNodeData = {
+    note: Note;
+    deleteNote: (id: string) => void;
+}
+
+export type NoteNode = Node<NoteNodeData, "NoteNodeData">
