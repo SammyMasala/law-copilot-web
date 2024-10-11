@@ -1,7 +1,16 @@
 export enum API_ROUTES {
-    CHAT =  "chat",
-    SUBJECT = "subject",
-    SESSION = "session",
+    CHAT =  "/chat",
+    SESSION = "/session",
+}
+
+export enum CHAT_ROUTES {
+    CONVERSATION = "",
+    ASK_LAW = "/law"
+}
+
+export enum SESSION_ROUTES {
+    SAVE = "",
+    LOAD = ""
 }
 
 // Legacy

@@ -3,7 +3,12 @@ import { API_ENDPOINT } from "@src/config";
 import { LoadResponse, SaveResponse, SessionData } from "@src/libs/types";
 import { mapLoadResponseToSessionData, mapSessionDataToSaveRequest } from "@src/mappers";
 
-export class SessionService {
+export interface ISessionService {
+    loadSession(id:string): Promise<SessionData | null>
+    saveSession(data: SessionData): Promise<any>
+}
+
+export class SessionService implements ISessionService{
     private readonly client = new APIClient({endpoint: API_ENDPOINT});
 
     async loadSession(id: string):Promise<SessionData | null>{

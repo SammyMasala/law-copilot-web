@@ -3,7 +3,7 @@ import { Message } from "@src/libs"
 
 export function mapMessagesToChatRequest(messages: Message[]): ChatRequest{
     const chatRequest: ChatRequest = {
-        messages: messages.map(elem => JSON.stringify(elem))
+        messages
     }
     return chatRequest
 }

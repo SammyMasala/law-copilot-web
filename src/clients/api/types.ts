@@ -8,7 +8,7 @@ export type ApiResponse = {
 
 // chat
 export type ChatRequest = {
-    messages: string[]
+    messages: Record<string, any>[]
 }
 export type ChatResponse = ApiResponse 
 

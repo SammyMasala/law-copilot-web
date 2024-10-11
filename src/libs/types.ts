@@ -49,8 +49,9 @@ export type Note = {
 }
 
 export type NoteNodeData = {
+    id: string,
     note: Note;
     deleteNote: (id: string) => void;
 }
 
-export type NoteNode = Node<NoteNodeData, "NoteNodeData">
+export type NoteNodeType = Node<NoteNodeData, "noteNode">

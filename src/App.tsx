@@ -9,10 +9,10 @@ import { AUTOSAVE_INTERVAL, INITIAL_MESSAGE } from '@src/config';
 import { Header } from '@src/components/Header';
 import { Editor } from '@src/components/Editor';
 import { randomId } from '@src/utils/randomId';
-import { Message, NoteNode } from '@src/libs';
+import { Message, NoteNodeType } from '@src/libs';
 import { SessionData, SubjectData } from '@src/libs';
 import { Board } from '@src/components/Board';
-import { ChatService, SessionService } from '@src/services';
+import { ChatService, NoteService, SessionService } from '@src/services';
 
 interface ISessionProvider{
     children: ReactNode
@@ -23,10 +23,11 @@ const SessionContext: Context<any> = createContext(null)
 const SessionProvider = ({children}: ISessionProvider) => {
     const sessionService = new SessionService();
     const chatService = new ChatService();
+    const noteService = new NoteService();
 
     const [sessionID, setSessionID] = useState<string>("")
     const [docHTML, setDocHTML] = useState<string>("")
-    const [noteNodes, setNoteNodes] = useState<NoteNode[]>([])
+    const [noteNodes, setNoteNodes] = useState<NoteNodeType[]>([noteService.initialNote(deleteNoteNode)])
     const [messages, setMessages] = useState<Message[]>([INITIAL_MESSAGE])
     const [isLoaded, setIsLoaded] = useState<boolean>(false)
     const [sessionURL, setSessionURL] = useState<string>("")
@@ -73,13 +74,21 @@ const SessionProvider = ({children}: ISessionProvider) => {
         }
     }
 
+    // NoteNode
+    function deleteNoteNode(id: string):void{
+        setNoteNodes(prev => prev.filter((noteNode) => noteNode.id !== id))
+    }
+
     // SUBMIT MESSAGES TO CHAT API
     async function loadNewSubject(): Promise<void>{
         try{
             console.log("Sending Messages:", messages)
-            const subjectData:SubjectData | null = await chatService.subjectQuery(messages.slice(-1));
+            const subjectData:SubjectData | null = await chatService.subjectQuery(messages);
 
             console.log(subjectData)
+            if(subjectData){
+                setNoteNodes([...noteNodes, noteService.createNote(subjectData, deleteNoteNode)])
+            }
         }catch (error){
             console.error(error);
         }
