@@ -6,7 +6,8 @@ import "@xyflow/react/dist/style.css";
 import { InputGroup } from "react-bootstrap";
 
 import NoteNode from "./NoteNode"
-import { Message, NoteNodeType } from "@src/libs";
+import { ChatMessage } from "@src/entities";
+import { NoteNodeType } from "@src/entities/notes";
 
 export type BoardProps = {
     context: React.Context<any>
@@ -35,7 +36,7 @@ export const Board: React.FC<BoardProps> = (props: BoardProps) => {
             return
         }
         // LEGACY
-        const newSubject: Message = {
+        const newSubject: ChatMessage = {
             isUser: true,
             message: `Tell me about ${subjectInput} in UK Law`
         }

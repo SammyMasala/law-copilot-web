@@ -9,10 +9,10 @@ import { AUTOSAVE_INTERVAL, INITIAL_MESSAGE } from '@src/config';
 import { Header } from '@src/components/Header';
 import { Editor } from '@src/components/Editor';
 import { randomId } from '@src/utils/randomId';
-import { Message, NoteNodeType } from '@src/libs';
-import { SessionData, SubjectData } from '@src/libs';
 import { Board } from '@src/components/Board';
 import { ChatService, NoteService, SessionService } from '@src/services';
+import { NoteNodeType, SubjectData } from './entities/notes';
+import { ChatMessage, SessionData } from './entities';
 
 interface ISessionProvider{
     children: ReactNode
@@ -28,7 +28,7 @@ const SessionProvider = ({children}: ISessionProvider) => {
     const [sessionID, setSessionID] = useState<string>("")
     const [docHTML, setDocHTML] = useState<string>("")
     const [noteNodes, setNoteNodes] = useState<NoteNodeType[]>([noteService.initialNote(deleteNoteNode)])
-    const [messages, setMessages] = useState<Message[]>([INITIAL_MESSAGE])
+    const [messages, setMessages] = useState<ChatMessage[]>([INITIAL_MESSAGE])
     const [isLoaded, setIsLoaded] = useState<boolean>(false)
     const [sessionURL, setSessionURL] = useState<string>("")
     const [autosaveTimer, setAutosaveTimer] = useState<number>(AUTOSAVE_INTERVAL)
@@ -39,9 +39,7 @@ const SessionProvider = ({children}: ISessionProvider) => {
     async function saveSession(): Promise<void> {
         try{
             console.log("Saving session:", sessionID)
-            const result = await sessionService.saveSession({
-                sessionID, docHTML, noteNodes, messages
-            })
+            const result = await sessionService.saveSession(sessionID, {docHTML, messages, noteNodes})
             console.log(result)
         }catch (error){
             console.error(error);
@@ -83,7 +81,7 @@ const SessionProvider = ({children}: ISessionProvider) => {
     async function loadNewSubject(): Promise<void>{
         try{
             console.log("Sending Messages:", messages)
-            const subjectData:SubjectData | null = await chatService.subjectQuery(messages);
+            const subjectData:SubjectData | null = await chatService.lawQuery(messages[0]);
 
             console.log(subjectData)
             if(subjectData){

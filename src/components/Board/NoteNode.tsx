@@ -1,4 +1,4 @@
-import { NoteNodeType } from "@src/libs";
+import { NoteNodeType } from "@src/entities/notes";
 import { NodeProps } from "@xyflow/react";
 import React, { useState } from "react"
 import { Card, CloseButton, Collapse, ToggleButton } from "react-bootstrap";

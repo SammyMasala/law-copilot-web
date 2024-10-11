@@ -1,6 +1,6 @@
 import axios from "axios";
 import { API_ROUTES, CHAT_ROUTES, LEGACY_CHAT_ENDPOINT, LEGACY_SESSION_GET_ENDPOINT, LEGACY_SESSION_PUT_ENDPOINT, SESSION_ROUTES } from "./config";
-import { ChatRequest, ChatResponse, LegacyChatResponse, LoadRequest, LoadResponse, SaveRequest, SaveResponse, SubjectResponse } from "./types";
+import { AskLawRequest, AskLawResponse, ChatRequest, ChatResponse, LegacyChatRequest, LegacyChatResponse, LegacyLoadResponse, LegacySaveRequest, LoadRequest, LoadResponse, SaveRequest, SaveResponse } from "./dtos";
 
 export class APIClient {
     private readonly endpoint: string;
@@ -18,9 +18,9 @@ export class APIClient {
         }
     } 
 
-    async ask_law(request: ChatRequest): Promise<ChatResponse>{
+    async ask_law(request: AskLawRequest): Promise<AskLawResponse>{
         try{
-            const response: ChatResponse = (await axios.post(`${this.endpoint}${API_ROUTES.CHAT}${CHAT_ROUTES.ASK_LAW}`, request)).data;   
+            const response: AskLawResponse = (await axios.post(`${this.endpoint}${API_ROUTES.CHAT}${CHAT_ROUTES.ASK_LAW}`, request)).data;   
             return response;         
         }catch(error){
             throw error;
@@ -46,34 +46,34 @@ export class APIClient {
     }
 
     // Legacy API
-    async subjectLegacy(request: ChatRequest): Promise<LegacyChatResponse>{
+    async chatLegacy(request: LegacyChatRequest): Promise<LegacyChatResponse>{
         try{
-            const response: LegacyChatResponse = (await axios.post(LEGACY_CHAT_ENDPOINT, request)).data.payload;   
+            const response: LegacyChatResponse = (await axios.post(LEGACY_CHAT_ENDPOINT, request)).data;   
             return response;         
         }catch(error){
             throw error;
         }
     }
 
-    async loadLegacy(params: LoadRequest): Promise<LoadResponse>{
+    async loadLegacy(params: LoadRequest): Promise<LegacyLoadResponse>{
         try{
-            const response: LoadResponse = (await axios.get(`${LEGACY_SESSION_GET_ENDPOINT}?session_id=${params.id}`)).data.payload;   
+            const response: LegacyLoadResponse = (await axios.get(`${LEGACY_SESSION_GET_ENDPOINT}?session_id=${params.id}`)).data;   
             return response;         
         }catch(error){
             throw error;
         }
     }
 
-    async saveLegacy(data: SaveRequest): Promise<SaveResponse>{
+    async saveLegacy(data: LegacySaveRequest): Promise<SaveResponse>{
         try{
-            const saveRequest = {
-                session: data
-            }
-            const response: SaveResponse = (await axios.post(`${LEGACY_SESSION_PUT_ENDPOINT}`, saveRequest)).data;   
+            const response: SaveResponse = (await axios.post(`${LEGACY_SESSION_PUT_ENDPOINT}`, data)).data;   
             return response;         
         }catch(error){
             throw error;
         }
     }
-
 }
+
+(async() => {
+    const client = new APIClient({endpoint: "https://jt9sn0g75c.execute-api.ap-southeast-1.amazonaws.com/stg"})
+})()

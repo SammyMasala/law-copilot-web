@@ -1,5 +1,5 @@
-import { Note, NoteNodeType, SubjectData } from "@src/libs"
-import { mapNotetoNoteNodeType, mapSubjectDatatoNote } from "@src/mappers"
+import { Note, NoteNodeType, SubjectData } from "@src/entities/notes"
+import { NotesMapper } from "@src/mappers"
 
 export interface INoteService{
     initialNote(deleteFunc: (id:string) => void): NoteNodeType
@@ -18,11 +18,11 @@ export class NoteService implements INoteService{
             }
         }
 
-        return mapNotetoNoteNodeType(initialNote, deleteFunc)
+        return NotesMapper.mapNotetoNoteNodeType(initialNote, deleteFunc)
     }
 
     createNote(subjectData: SubjectData, deleteFunc: (id:string) => void): NoteNodeType { 
-        const newNote: Note = mapSubjectDatatoNote(subjectData)
-        return mapNotetoNoteNodeType(newNote, deleteFunc)
+        const newNote: Note = NotesMapper.mapSubjectDatatoNote(subjectData)
+        return NotesMapper.mapNotetoNoteNodeType(newNote, deleteFunc)
     }
 }

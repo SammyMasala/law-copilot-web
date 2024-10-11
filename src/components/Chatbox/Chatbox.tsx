@@ -4,15 +4,15 @@ import Row from "react-bootstrap/Row";
 import ListGroup from "react-bootstrap/ListGroup"
 import Form from "react-bootstrap/Form"
 import Button from "react-bootstrap/Button"
-import { Message } from ".";
-import { ChatService } from "@src/libs";
+import { ChatService } from "@src/services";
+import { ChatMessage } from "@src/entities";
 
 interface IChatboxProps{
     context: React.Context<any>
 }
     
 export const Chatbox: React.FC<IChatboxProps> = (props: IChatboxProps) => {
-    const chatService = new ChatService;
+    const chatService = new ChatService();
     const {context} = props
     const { messages, setMessages } = useContext(context)
     const [isInputEnabled, setIsInputEnabled] = useState<boolean>(true)
@@ -31,9 +31,9 @@ export const Chatbox: React.FC<IChatboxProps> = (props: IChatboxProps) => {
         if (!messages.length || !messages.at(-1).isUser) {
             return
         }
-        const sendMessage = async (messages: Message[]) => {
+        const sendMessage = async (messages: ChatMessage[]) => {
             const reply = {
-                message: await chatService.chatResponse(messages),
+                message: await chatService.chatQuery(messages),
                 isUser: false
             }
             setMessages([...messages, reply])
@@ -77,7 +77,7 @@ export const Chatbox: React.FC<IChatboxProps> = (props: IChatboxProps) => {
         <Container className="d-flex flex-column">
             <Row id="chatbox-messages" className="flex-grow-1 overflow-auto">
                 <ListGroup>
-                    {messages.map((message: Message, index: number) => {
+                    {messages.map((message: ChatMessage, index: number) => {
                         return (
                             <ListGroup.Item
                                 className={`d-flex border border-0 bg-transparent

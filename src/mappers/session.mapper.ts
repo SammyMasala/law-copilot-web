@@ -1,22 +1,21 @@
-import { SaveRequest } from "@src/clients/api"
-import { LoadResponse, SessionData } from "@src/libs"
+import { Session } from "@src/clients/api/entities";
+import { SessionData } from "@src/entities";
+import { NoteNodeType } from "@src/entities/notes";
 
-export function mapLoadResponseToSessionData(data: LoadResponse): SessionData{
-    const sessionData: SessionData = {
-        sessionID: data.id,
-        docHTML: data.doc_html,
-        messages: data.messages?.map(elem => JSON.parse(elem)),
-        noteNodes: data.note_nodes?.map(elem => JSON.parse(elem))
+export class SessionMapper {
+    static mapSessionToSessionData(session: Session): SessionData{
+        return {
+            docHTML: session.doc_html,
+            messages: session.messages,
+            noteNodes: session.note_nodes as NoteNodeType[]
+        }
     }
-    return sessionData
-}
 
-export function mapSessionDataToSaveRequest(sessionData: SessionData): SaveRequest{
-    const saveRequest: SaveRequest = {
-        doc_html: sessionData.docHTML,
-        id: sessionData.sessionID,
-        messages: sessionData.messages?.map(elem => JSON.stringify(elem)),
-        note_nodes: sessionData.noteNodes?.map(elem => JSON.stringify(elem)) || []
+    static mapSessionDataToSession(sessionData: SessionData): Session{
+        return {
+            doc_html: sessionData.docHTML,
+            messages: sessionData.messages,
+            note_nodes: sessionData.noteNodes
+        }
     }
-    return saveRequest
 }
