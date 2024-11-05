@@ -1,4 +1,4 @@
-import { applyNodeChanges, Background, BackgroundVariant, Controls, MiniMap, Node, OnNodesChange, ReactFlow } from "@xyflow/react";
+import { applyNodeChanges, Background, BackgroundVariant, Controls, MiniMap, Node, OnNodesChange, ReactFlow, useReactFlow } from "@xyflow/react";
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { Button, Container, Form } from "react-bootstrap";
 
@@ -71,9 +71,16 @@ export const Board: React.FC<BoardProps> = (props: BoardProps) => {
                 nodes={noteNodes}
                 onNodesChange={onNodesChange}
                 nodeTypes={nodeTypes}
-            >
-                
-                <MiniMap />
+                minZoom={0.75}
+                maxZoom={1}
+                panOnDrag={false}
+                panOnScroll={false}
+                translateExtent={[[0,0], [1920, 1080]]}
+            >   
+                <MiniMap 
+                    zoomable={false}
+                    pannable={true}
+                />
                 <Controls />
                 <Background variant={BackgroundVariant.Dots} gap={12} size={1}/>
             </ReactFlow>
