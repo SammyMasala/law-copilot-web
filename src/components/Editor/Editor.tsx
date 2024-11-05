@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from "react"
+import React, { useContext, useEffect, useRef } from "react"
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -16,7 +16,7 @@ interface IEditorProps{
     context: React.Context<any>
 }
 
-const Editor: React.FC<IEditorProps> = (props: IEditorProps) => {
+export const Editor: React.FC<IEditorProps> = (props: IEditorProps) => {
     const {context} = props
     const {docHTML, setDocHTML, isLoaded} = useContext(context)
     const quillRef = useRef<ReactQuill>(null)
@@ -73,5 +73,3 @@ const Editor: React.FC<IEditorProps> = (props: IEditorProps) => {
         </Container>
     )
 } 
-
-export default Editor; 

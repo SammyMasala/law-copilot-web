@@ -4,18 +4,15 @@ import Row from "react-bootstrap/Row";
 import ListGroup from "react-bootstrap/ListGroup"
 import Form from "react-bootstrap/Form"
 import Button from "react-bootstrap/Button"
-import chatResponse from "../../api/chat.api";
-
-export interface IMessage {
-    message: string;
-    isUser: boolean;
-}
+import { ChatService } from "@src/services";
+import { ChatMessage } from "@src/entities";
 
 interface IChatboxProps{
     context: React.Context<any>
 }
     
-const Chatbox: React.FC<IChatboxProps> = (props: IChatboxProps) => {
+export const Chatbox: React.FC<IChatboxProps> = (props: IChatboxProps) => {
+    const chatService = new ChatService();
     const {context} = props
     const { messages, setMessages } = useContext(context)
     const [isInputEnabled, setIsInputEnabled] = useState<boolean>(true)
@@ -34,9 +31,9 @@ const Chatbox: React.FC<IChatboxProps> = (props: IChatboxProps) => {
         if (!messages.length || !messages.at(-1).isUser) {
             return
         }
-        const sendMessage = async (messages: IMessage[]) => {
+        const sendMessage = async (messages: ChatMessage[]) => {
             const reply = {
-                message: await chatResponse(messages),
+                message: await chatService.chatQuery(messages),
                 isUser: false
             }
             setMessages([...messages, reply])
@@ -80,7 +77,7 @@ const Chatbox: React.FC<IChatboxProps> = (props: IChatboxProps) => {
         <Container className="d-flex flex-column">
             <Row id="chatbox-messages" className="flex-grow-1 overflow-auto">
                 <ListGroup>
-                    {messages.map((message: IMessage, index: number) => {
+                    {messages.map((message: ChatMessage, index: number) => {
                         return (
                             <ListGroup.Item
                                 className={`d-flex border border-0 bg-transparent
@@ -121,5 +118,3 @@ const Chatbox: React.FC<IChatboxProps> = (props: IChatboxProps) => {
         </Container>
     )
 }
-
-export default Chatbox;

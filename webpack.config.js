@@ -38,6 +38,9 @@ module.exports = (env, argv) => {
             ]
         },
         resolve: {
+            alias: {
+                "@src": path.resolve(__dirname, "src/")
+            },
             extensions: [".js", ".jsx", ".ts", ".tsx"]
         },
         performance: {
