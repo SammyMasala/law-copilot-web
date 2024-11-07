@@ -11,6 +11,7 @@ export class NotesMapper{
             data: {
                 id: noteID,
                 note: noteData,
+                selected: true,
                 deleteNote: deleteFunc
             },
             type: "noteNode"

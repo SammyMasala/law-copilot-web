@@ -9,10 +9,11 @@ import { AUTOSAVE_INTERVAL, INITIAL_MESSAGE } from '@src/config';
 import { Header } from '@src/components/Header';
 import { Editor } from '@src/components/Editor';
 import { randomId } from '@src/utils/randomId';
-import { Board } from '@src/components/Board';
 import { ChatService, NoteService, SessionService } from '@src/services';
 import { NoteNodeType, SubjectData } from './entities/notes';
 import { ChatMessage, SessionData } from './entities';
+import { NoteList } from './components/NoteList';
+import { Footer } from './components/Footer';
 
 interface ISessionProvider{
     children: ReactNode
@@ -185,15 +186,12 @@ const HomePage:React.FC = () => {
                 <Header context={SessionContext}/>
             </Row>
             <Row className="flex-grow-1" id="content">
-                <Col xs={12} md={8} className="d-flex" id="content-graph">
-                    <Board context={SessionContext}/>
+                <Col xs={12} className="d-flex" id="content-graph">
+                    <NoteList context={SessionContext}/>
                 </Col>
-                <Col xs={0} md={4} className="d-flex" id="content-editor">
-                    <Editor context={SessionContext}/>
-                </Col>
-                {/* <Col xs={0} md={4} className="d-flex bg-secondary bg-opacity-50" id="content-chatbox">
-                    <Chatbox context={SessionContext}/>
-                </Col> */}
+            </Row>
+            <Row className="bg-dark text-light flex-shrink-0" id="header">
+                <Footer context={SessionContext}/>
             </Row>
         </Container>
     ) 
