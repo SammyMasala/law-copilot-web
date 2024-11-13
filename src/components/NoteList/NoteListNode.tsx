@@ -1,18 +1,29 @@
 import { NoteNodeType } from "@src/entities/notes";
-import React, { useState } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { Card, CloseButton, Collapse, ToggleButton } from "react-bootstrap";
 
 export type NoteListNodeProps = {
     node: NoteNodeType
+    context: React.Context<any>
 }
 
-export const NoteListNode: React.FC<NoteListNodeProps> = ({node}) => {
+export const NoteListNode: React.FC<NoteListNodeProps> = ({node, context}) => {
     const {data} = node
+    const {noteNodes, setNoteNodes} = useContext(context)
     const [collapsed, setCollapsed] = useState<boolean>(false)
-    const [checked, setChecked] = useState<boolean>(false)
+    const [checked, setChecked] = useState<boolean>(data.selected)
     function handleDelete():void {
-        data.deleteNote(node.id)
+        setNoteNodes(noteNodes.filter((node: NoteNodeType) => node.id !== data.id))
     }
+
+    useEffect(() => {
+        const newNoteNodes = noteNodes.map((node: NoteNodeType) => node.id !== data.id ? node : {...node, data: {
+            ...node.data,
+            selected: checked
+        }})
+        setNoteNodes(newNoteNodes)
+    },[checked])
+
     return (
         <Card className="bg-dark text-light">
             <Card.Header className="d-flex" onClick={() => setCollapsed(!collapsed)}>

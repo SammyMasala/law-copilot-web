@@ -17,7 +17,6 @@ export type NoteNodeData = {
     id: string,
     note: Note,
     selected: boolean,
-    deleteNote: (id: string) => void
 }
 
 export type NoteNodeType = Node<NoteNodeData, "noteNode">

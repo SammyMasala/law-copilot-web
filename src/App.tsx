@@ -28,7 +28,7 @@ const SessionProvider = ({children}: ISessionProvider) => {
 
     const [sessionID, setSessionID] = useState<string>("")
     const [docHTML, setDocHTML] = useState<string>("")
-    const [noteNodes, setNoteNodes] = useState<NoteNodeType[]>([noteService.initialNote(deleteNoteNode)])
+    const [noteNodes, setNoteNodes] = useState<NoteNodeType[]>([noteService.initialNote()])
     const [messages, setMessages] = useState<ChatMessage[]>([INITIAL_MESSAGE])
     const [isLoaded, setIsLoaded] = useState<boolean>(false)
     const [sessionURL, setSessionURL] = useState<string>("")
@@ -73,11 +73,6 @@ const SessionProvider = ({children}: ISessionProvider) => {
         }
     }
 
-    // NoteNode
-    function deleteNoteNode(id: string):void{
-        setNoteNodes(prev => prev.filter((noteNode) => noteNode.id !== id))
-    }
-
     // SUBMIT MESSAGES TO CHAT API
     async function loadNewSubject(): Promise<void>{
         try{
@@ -86,7 +81,7 @@ const SessionProvider = ({children}: ISessionProvider) => {
 
             console.log(subjectData)
             if(subjectData){
-                setNoteNodes([...noteNodes, noteService.createNote(subjectData, deleteNoteNode)])
+                setNoteNodes([...noteNodes, noteService.createNote(subjectData)])
             }
         }catch (error){
             console.error(error);

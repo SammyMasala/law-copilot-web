@@ -67,7 +67,7 @@ export const NoteList: React.FC<NoteListProps> = (props: NoteListProps) => {
                             key={`entry-${index}`}
                             className="p-0"
                         >
-                            <NoteListNode node={node}/>
+                            <NoteListNode node={node} context={context}/>
                         </ListGroup.Item>
                     )
                 })}

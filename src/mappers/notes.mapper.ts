@@ -3,7 +3,7 @@ import { randomId } from "@src/utils/randomId";
 import { snakeCaseToCapitalized } from "@src/utils/snakeCaseToCapitalized";
 
 export class NotesMapper{
-    static mapNotetoNoteNodeType(noteData: Note, deleteFunc: (id: string) => void): NoteNodeType {
+    static mapNotetoNoteNodeType(noteData: Note): NoteNodeType {
         const noteID = randomId(6);
         const noteNode: NoteNodeType = {
             id: noteID,
@@ -12,7 +12,6 @@ export class NotesMapper{
                 id: noteID,
                 note: noteData,
                 selected: true,
-                deleteNote: deleteFunc
             },
             type: "noteNode"
         }

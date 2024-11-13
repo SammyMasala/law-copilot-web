@@ -7,7 +7,7 @@ export interface INoteService{
 }
 
 export class NoteService implements INoteService{
-    initialNote(deleteFunc: (id:string) => void): NoteNodeType {
+    initialNote(): NoteNodeType {
         const initialNote: Note = {
             subject: "This is a Note!",
             content: {
@@ -18,11 +18,11 @@ export class NoteService implements INoteService{
             }
         }
 
-        return NotesMapper.mapNotetoNoteNodeType(initialNote, deleteFunc)
+        return NotesMapper.mapNotetoNoteNodeType(initialNote)
     }
 
-    createNote(subjectData: SubjectData, deleteFunc: (id:string) => void): NoteNodeType { 
+    createNote(subjectData: SubjectData): NoteNodeType { 
         const newNote: Note = NotesMapper.mapSubjectDatatoNote(subjectData)
-        return NotesMapper.mapNotetoNoteNodeType(newNote, deleteFunc)
+        return NotesMapper.mapNotetoNoteNodeType(newNote)
     }
 }
